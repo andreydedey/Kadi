@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { Routes, Route } from "react-router";
+import { Home } from "./pages/Home";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
     <>
-      <h1 className="text-8xl">Kadi</h1>
+      <Routes>
+        <Route index element={<Home />}></Route>
+      </Routes>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
