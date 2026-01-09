@@ -1,17 +1,14 @@
 import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet } from "react-router";
 
 export const AppLayout = () => {
+  console.log("passou por aqui");
   return (
     <SidebarProvider>
-      <div>
+      <div className="flex min-h-screen p-4 box-border">
         <AppSidebar />
-        <main>
-          <header>
-            <SidebarTrigger />
-          </header>
-
+        <main className="flex-1">
           <div>
             <Outlet />
           </div>
