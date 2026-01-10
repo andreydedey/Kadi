@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { Home } from "./pages/Home";
+import { Dashboard } from "./pages/Dashboard";
 import { AppLayout } from "./layouts/AppLayout";
 
 const App = () => {
@@ -7,7 +7,7 @@ const App = () => {
     <>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route index element={<Home />}></Route>
+          <Route index element={<Dashboard />}></Route>
         </Route>
       </Routes>
     </>
