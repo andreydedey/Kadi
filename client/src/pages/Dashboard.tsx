@@ -16,14 +16,14 @@ export const Dashboard = () => {
         <WalletCard title="Revolut" amount={897.01} />
         <WalletCard title="Bank of america" amount={4581.11} />
       </div>
-      <div className="flex space-x-8">
-        <div className="flex flex-col gap-3">
+      <div className="flex gap-8">
+        <div className="flex flex-col gap-3 flex-1">
           <h3 className="text-sm text-muted-foreground antialiased">
             Last Transactions
           </h3>
-          <Card className="w-xs">
+          <Card>
             <CardContent className="flex items-center gap-6">
-              <div className="flex rounded-full h-3/4 aspect-square items-center justify-center bg-zinc-800">
+              <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
                 <FontAwesomeIcon
                   className="text-xs"
                   icon={faArrowRightArrowLeft}
@@ -36,21 +36,42 @@ export const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 flex-1">
           <h3 className="text-sm text-muted-foreground antialiased">
             Total Money
           </h3>
-          <Card className="w-xs">
-            <CardContent className="flex items-center gap-6">
-              <div className="flex rounded-full h-3/4 aspect-square items-center justify-center bg-zinc-800">
-                <FontAwesomeIcon
-                  className="text-xs"
-                  icon={faArrowRightArrowLeft}
-                />
+          <Card>
+            <CardContent className="flex items-center h-full justify-between">
+              <span>24763.10</span>
+              <span>USD</span>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-col gap-3 flex-1">
+          <h3 className="text-sm antialiased text-muted-foreground">
+            All Subscriptions
+          </h3>
+          <Card>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
+                  <FontAwesomeIcon
+                    className="text-xs"
+                    icon={faArrowRightArrowLeft}
+                  />
+                </div>
+                <span>Bank Account Fee</span>
+                <span>16.55 USD</span>
               </div>
-              <div className="flex flex-col">
-                <strong className="text-green-400">+38 USD</strong>
-                <CardDescription>Transfer</CardDescription>
+              <div className="flex items-center justify-between">
+                <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
+                  <FontAwesomeIcon
+                    className="text-xs"
+                    icon={faArrowRightArrowLeft}
+                  />
+                </div>
+                <span>Bank Account Fee</span>
+                <span>16.55 USD</span>
               </div>
             </CardContent>
           </Card>
