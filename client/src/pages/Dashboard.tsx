@@ -1,8 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
-import { WalletCard } from "@/components/WalletCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription } from "@/components/ui/card"
+import { WalletCard } from "@/components/WalletCard"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
+
+export const wallets = [
+  { name: "Cash", amount: 67000 },
+  { name: "Revolut", amount: 89701 },
+  { name: "Bank of America", amount: 458111 },
+]
 
 export const Dashboard = () => {
   return (
@@ -12,9 +18,9 @@ export const Dashboard = () => {
         <Button className="cursor-pointer">Add Wallet</Button>
       </div>
       <div className="flex space-x-5 mb-6">
-        <WalletCard title="Cash" amount={670.0} />
-        <WalletCard title="Revolut" amount={897.01} />
-        <WalletCard title="Bank of america" amount={4581.11} />
+        {wallets.map((wallet) => (
+          <WalletCard title={wallet.name} amount={wallet.amount} />
+        ))}
       </div>
       <div className="flex gap-8">
         <div className="flex flex-col gap-3 flex-1">
@@ -78,5 +84,5 @@ export const Dashboard = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
