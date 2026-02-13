@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription } from "@/components/ui/card"
 import { WalletCard } from "@/components/WalletCard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
+import { ItemCard } from "@/components/ItemCard"
 
 export const wallets = [
   { name: "Cash", amount: 67000 },
@@ -27,20 +28,7 @@ export const Dashboard = () => {
           <h3 className="text-sm text-muted-foreground antialiased">
             Last Transactions
           </h3>
-          <Card>
-            <CardContent className="flex items-center gap-6">
-              <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
-                <FontAwesomeIcon
-                  className="text-xs"
-                  icon={faArrowRightArrowLeft}
-                />
-              </div>
-              <div className="flex flex-col">
-                <strong className="text-green-400">+38 USD</strong>
-                <CardDescription>Transfer</CardDescription>
-              </div>
-            </CardContent>
-          </Card>
+          <ItemCard amount={30} category="Food" icon={faArrowRightArrowLeft} />
         </div>
         <div className="flex flex-col gap-3 flex-1">
           <h3 className="text-sm text-muted-foreground antialiased">
