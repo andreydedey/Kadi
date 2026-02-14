@@ -1,11 +1,11 @@
-import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Outlet } from "react-router";
+import { AppSidebar } from "@/components/AppSidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { Outlet } from "react-router"
 
 export const AppLayout = () => {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen min-w-screen p-4 box-border">
+      <div className="flex min-h-screen min-w-screen p-4 box-border gap-4">
         <AppSidebar />
         <main className="flex-1">
           <div>
@@ -14,5 +14,5 @@ export const AppLayout = () => {
         </main>
       </div>
     </SidebarProvider>
-  );
-};
+  )
+}
