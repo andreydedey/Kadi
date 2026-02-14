@@ -14,7 +14,7 @@ export const wallets = [
 export const Dashboard = () => {
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-6">
         <h1 className="text-xl font-medium">Dashboard</h1>
         <Button className="cursor-pointer">Add Wallet</Button>
       </div>
