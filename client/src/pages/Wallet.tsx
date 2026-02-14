@@ -9,13 +9,14 @@ import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice"
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ProgressWithLabel } from "@/components/ProgressWithLabel"
+import { Subscriptions } from "@/components/Subscriptions"
 
 export const Wallet = () => {
   return (
     <div className="flex gap-8">
       <div className="flex flex-1 flex-col gap-6">
         <div className="flex justify-between">
-          <h1 className="text-xl font-medium">Inter</h1>
+          <h1 className="text-xl font-medium">Inter (USD)</h1>
           <div className="space-x-3">
             <Button variant="outline" size="icon">
               <FontAwesomeIcon icon={faClockRotateLeft} />
@@ -29,7 +30,7 @@ export const Wallet = () => {
           </div>
         </div>
         <div className="flex justify-between">
-          <h2>Transactions</h2>
+          <h2 className="text-md">Transactions</h2>
           <Button>Add Transaction</Button>
         </div>
         <div className="space-y-4">
@@ -46,7 +47,7 @@ export const Wallet = () => {
         </div>
         <Card>
           <CardHeader className="flex items-center justify-between">
-            <h3 className="text-sm text-muted-foreground antialiased">
+            <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
             <Button variant={"outline"}>
@@ -62,6 +63,7 @@ export const Wallet = () => {
             </div>
           </CardContent>
         </Card>
+        <Subscriptions subscriptions={[{ name: "Netflix", amount: 32.12 }]} />
       </div>
     </div>
   )
