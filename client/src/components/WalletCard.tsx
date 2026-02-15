@@ -7,7 +7,7 @@ interface WalletCardProps {
 
 export const WalletCard = ({ title, amount }: WalletCardProps) => {
   return (
-    <Card className="gap-1 border-none min-w-xs">
+    <Card className="gap-1 border-none min-w-">
       <CardHeader className="margin">
         <CardTitle className="font-light">{title}</CardTitle>
       </CardHeader>

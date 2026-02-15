@@ -23,7 +23,7 @@ export const Subscriptions: React.FC<SubscriptionProps> = ({
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h3 className="text-md text-muted-foreground antialiased">
-            Subscrtptions
+            Subscriptions
           </h3>
           <Button variant={"outline"}>
             <FontAwesomeIcon icon={faPlus} />
