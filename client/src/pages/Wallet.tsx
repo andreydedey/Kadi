@@ -9,7 +9,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ProgressWithLabel } from "@/components/ProgressWithLabel"
 import { Subscriptions } from "@/components/Subscriptions"
-import { AddTransactionDialog } from "@/components/AddTransactionDialog"
+import { AddTransactionDialog } from "@/components/AddTransactionDialog/AddTransactionDialog"
 
 export const Wallet = () => {
   return (

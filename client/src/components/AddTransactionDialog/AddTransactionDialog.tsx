@@ -1,13 +1,26 @@
-import { FieldGroup } from "./ui/field"
+import { Field, FieldLabel, FieldSet } from "../ui/field"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog"
-import { Button } from "./ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
+} from "../ui/dialog"
+import { Button } from "../ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight"
+import { Input } from "../ui/input"
+import { DatePicker } from "../DatePicker"
+import { ExpenseTab } from "./tabs/ExpenseTab"
 
 const capitalize = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1)
@@ -21,7 +34,7 @@ export const AddTransactionDialog = () => {
       <DialogTrigger asChild>
         <Button>Add Transaction</Button>
       </DialogTrigger>
-      <DialogContent className="min-h-[500px] flex flex-col gap-6">
+      <DialogContent className="min-h-[560px] flex flex-col gap-6">
         <DialogHeader>
           <DialogTitle>Add Transaction</DialogTitle>
         </DialogHeader>
@@ -33,11 +46,8 @@ export const AddTransactionDialog = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="account">
-            Make changes to your account here.
-          </TabsContent>
           <TabsContent value="expense">
-            <FieldGroup>andrey</FieldGroup>
+            <ExpenseTab />
           </TabsContent>
         </Tabs>
       </DialogContent>
