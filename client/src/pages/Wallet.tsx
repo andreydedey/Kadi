@@ -7,9 +7,9 @@ import { ItemCard } from "@/components/ItemCard"
 import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice"
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProgressWithLabel } from "@/components/ProgressWithLabel"
 import { Subscriptions } from "@/components/Subscriptions"
 import { AddTransactionDialog } from "@/components/AddTransactionDialog/AddTransactionDialog"
+import { CategoryCard } from "@/components/CategoryCard"
 
 export const Wallet = () => {
   return (
@@ -60,17 +60,15 @@ export const Wallet = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <Button variant={"outline"}>
+            <Button
+              variant={"outline"}
+              className="bg-transparent! border-0 p-0! text-muted-foreground text-md"
+            >
               <FontAwesomeIcon icon={faPlus} />
             </Button>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-3">
-              <div className="flex rounded-full h-12 aspect-square items-center justify-center bg-zinc-800">
-                <FontAwesomeIcon icon={faPizzaSlice} />
-              </div>
-              <ProgressWithLabel category="Food" progress={66} />
-            </div>
+            <CategoryCard category="Food" icon={faPizzaSlice} />
           </CardContent>
         </Card>
         <Subscriptions subscriptions={[{ name: "Netflix", amount: 32.12 }]} />

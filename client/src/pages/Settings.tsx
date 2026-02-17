@@ -29,7 +29,7 @@ export const Settings = () => {
           <div className="space-y-1">
             <h2 className="text-lg font-medium">Your Wallets</h2>
             <p className="text-md text-muted-foreground mb-2">
-              You can change the order by dragging.
+              <p>You can change the order by dragging.</p>
             </p>
             <div className="space-y-4">
               {wallets.map((wallet) => (
