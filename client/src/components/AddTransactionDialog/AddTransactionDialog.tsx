@@ -21,6 +21,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight"
 import { Input } from "../ui/input"
 import { DatePicker } from "../DatePicker"
 import { ExpenseTab } from "./tabs/ExpenseTab"
+import { TransferTab } from "./tabs/TransferTab"
 
 const capitalize = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1)
@@ -48,6 +49,9 @@ export const AddTransactionDialog = () => {
           </TabsList>
           <TabsContent value="expense">
             <ExpenseTab />
+          </TabsContent>
+          <TabsContent value="transfer">
+            <TransferTab />
           </TabsContent>
         </Tabs>
       </DialogContent>
