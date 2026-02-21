@@ -25,10 +25,7 @@ export const Subscriptions: React.FC<SubscriptionProps> = ({
           <h3 className="text-md text-muted-foreground antialiased">
             Subscriptions
           </h3>
-          <Button
-            variant={"outline"}
-            className="bg-transparent! text-muted-foreground border-0 text-md p-0!"
-          >
+          <Button variant="ghost" size="icon">
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </CardHeader>

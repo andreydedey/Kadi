@@ -60,10 +60,7 @@ export const Wallet = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <Button
-              variant={"outline"}
-              className="bg-transparent! border-0 p-0! text-muted-foreground text-md"
-            >
+            <Button variant="ghost" size="icon">
               <FontAwesomeIcon icon={faPlus} />
             </Button>
           </CardHeader>

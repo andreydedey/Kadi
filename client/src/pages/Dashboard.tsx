@@ -1,18 +1,17 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { WalletCard } from "@/components/WalletCard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { ItemCard } from "@/components/ItemCard"
 import { AddWalletDialog } from "@/components/AddWalletDialog"
 
-export const wallets = [
-  { name: "Cash", amount: 67000 },
-  { name: "Revolut", amount: 89701 },
-  { name: "Bank of America", amount: 458111 },
-]
-
 export const Dashboard = () => {
+  const wallets = [
+    { name: "Cash", amount: 67000 },
+    { name: "Revolut", amount: 89701 },
+    { name: "Bank of America", amount: 458111 },
+  ]
+
   return (
     <>
       <div className="flex justify-between mb-6">

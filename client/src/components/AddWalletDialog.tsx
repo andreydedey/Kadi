@@ -66,9 +66,11 @@ export const AddWalletDialog = () => {
                 <Input
                   type="number"
                   placeholder={`0.00 ${selectedCurrency.toUpperCase()}`}
+                  className="no-spinners"
                 />
               </Field>
             </FieldGroup>
+            <Button className="mt-6 w-full">Save</Button>
           </form>
         </DialogHeader>
       </DialogContent>

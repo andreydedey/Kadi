@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button"
-import { wallets } from "./Dashboard"
 import { Card, CardContent } from "@/components/ui/card"
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router"
 
 export const Wallets = () => {
+  const wallets = [
+    { name: "Cash", amount: 67000 },
+    { name: "Revolut", amount: 89701 },
+    { name: "Bank of America", amount: 458111 },
+  ]
+
   return (
     <>
       <div className="flex justify-between">
@@ -15,7 +20,7 @@ export const Wallets = () => {
       <div className="flex flex-col space-y-5">
         {wallets.map((wallet) => (
           <Link to={"1"}>
-            <Card className="w-1/3 hover:bg-accent">
+            <Card className="w-1/3 hover:bg-accent border-0">
               <CardContent className="flex justify-between">
                 <span className="text-xl font-light">{wallet.name}</span>
                 <div className="flex gap-3 items-center">

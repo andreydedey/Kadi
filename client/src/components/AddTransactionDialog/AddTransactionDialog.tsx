@@ -1,4 +1,3 @@
-import { Field, FieldLabel, FieldSet } from "../ui/field"
 import {
   Dialog,
   DialogContent,
@@ -8,18 +7,6 @@ import {
 } from "../ui/dialog"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight"
-import { Input } from "../ui/input"
-import { DatePicker } from "../DatePicker"
 import { ExpenseTab } from "./tabs/ExpenseTab"
 import { TransferTab } from "./tabs/TransferTab"
 

@@ -12,18 +12,21 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 80
+    "lineWidth": 80,
+    "formatWithErrors": true
   },
   "linter": {
-    "enabled": false,
-    "rules": {
-      "recommended": true
-    }
+    "enabled": false
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
       "semicolons": "asNeeded"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "assist": {
