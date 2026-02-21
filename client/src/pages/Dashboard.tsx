@@ -4,6 +4,7 @@ import { WalletCard } from "@/components/WalletCard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { ItemCard } from "@/components/ItemCard"
+import { AddWalletDialog } from "@/components/AddWalletDialog"
 
 export const wallets = [
   { name: "Cash", amount: 67000 },
@@ -16,7 +17,7 @@ export const Dashboard = () => {
     <>
       <div className="flex justify-between mb-6">
         <h1 className="text-xl font-medium">Dashboard</h1>
-        <Button className="cursor-pointer">Add Wallet</Button>
+        <AddWalletDialog />
       </div>
       <div className="flex space-x-5 mb-6">
         {wallets.map((wallet) => (
