@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Subscriptions } from "@/components/Subscriptions"
 import { AddTransactionDialog } from "@/components/AddTransactionDialog/AddTransactionDialog"
 import { CategoryCard } from "@/components/CategoryCard"
+import { AddCategoryLimitDialog } from "@/components/AddCategoryLimitDialog"
 
 export const Wallet = () => {
   return (
@@ -60,9 +61,7 @@ export const Wallet = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <Button variant="ghost" size="icon">
-              <FontAwesomeIcon icon={faPlus} />
-            </Button>
+            <AddCategoryLimitDialog />
           </CardHeader>
           <CardContent>
             <CategoryCard category="Food" icon={faPizzaSlice} />
