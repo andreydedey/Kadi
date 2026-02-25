@@ -9,10 +9,15 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { DatePicker } from "@/components/DatePicker"
-import { Button } from "@/components/ui/button"
 
-export const ExpenseTab = () => {
+interface TransactionTabProps {
+  isExpense?: boolean
+}
+
+export const TransactionTab: React.FC<TransactionTabProps> = ({ isExpense = false }) => {
   const categories = ["food", "work", "leisure"]
+
+  console.log(isExpense)
 
   return (
     <>
@@ -52,7 +57,6 @@ export const ExpenseTab = () => {
         </Field>
         <DatePicker label="Event date" className="col-span-10" />
       </FieldSet>
-      <Button className="w-full">Save</Button>
     </>
   )
 }

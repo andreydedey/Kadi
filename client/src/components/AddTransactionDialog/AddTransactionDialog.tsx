@@ -7,7 +7,7 @@ import {
 } from "../ui/dialog"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import { ExpenseTab } from "./tabs/ExpenseTab"
+import { TransactionTab } from "./tabs/TransactionTab"
 import { TransferTab } from "./tabs/TransferTab"
 
 const capitalize = (string: string) => {
@@ -22,7 +22,7 @@ export const AddTransactionDialog = () => {
       <DialogTrigger asChild>
         <Button>Add Transaction</Button>
       </DialogTrigger>
-      <DialogContent className="min-h-[560px] flex flex-col gap-6">
+      <DialogContent className="min-h-[600px] flex flex-col gap-6">
         <DialogHeader>
           <DialogTitle>Add Transaction</DialogTitle>
         </DialogHeader>
@@ -35,12 +35,16 @@ export const AddTransactionDialog = () => {
             ))}
           </TabsList>
           <TabsContent value="expense">
-            <ExpenseTab />
+            <TransactionTab isExpense />
+          </TabsContent>
+          <TabsContent value="income">
+            <TransactionTab />
           </TabsContent>
           <TabsContent value="transfer">
             <TransferTab />
           </TabsContent>
         </Tabs>
+        <Button className="w-full mt-auto">Save</Button>
       </DialogContent>
     </Dialog>
   )

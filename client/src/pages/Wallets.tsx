@@ -1,3 +1,4 @@
+import { AddWalletDialog } from "@/components/AddWalletDialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical"
@@ -15,7 +16,7 @@ export const Wallets = () => {
     <>
       <div className="flex justify-between">
         <h1 className="text-xl font-medium">Wallets</h1>
-        <Button className="cursor-pointer">Add Wallet</Button>
+        <AddWalletDialog />
       </div>
       <div className="flex flex-col space-y-5">
         {wallets.map((wallet) => (

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { DatePicker } from "@/components/DatePicker"
-import { Button } from "@/components/ui/button"
 
 export const TransferTab = () => {
   const wallets = ["inter", "cash"]
@@ -73,7 +72,6 @@ export const TransferTab = () => {
         </Field>
         <DatePicker label="Event date" className="col-span-10" />
       </FieldSet>
-      <Button className="w-full">Save</Button>
     </>
   )
 }
