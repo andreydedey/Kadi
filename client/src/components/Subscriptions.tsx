@@ -4,7 +4,7 @@ import {
   faArrowRightArrowLeft,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons"
-import { Button } from "./ui/button"
+import { AddSubscriptionDialog } from "./AddSubscriptionDialog"
 
 type Subscription = {
   name: string
@@ -25,9 +25,7 @@ export const Subscriptions: React.FC<SubscriptionProps> = ({
           <h3 className="text-md text-muted-foreground antialiased">
             Subscriptions
           </h3>
-          <Button variant="ghost" size="icon">
-            <FontAwesomeIcon icon={faPlus} />
-          </Button>
+          <AddSubscriptionDialog />
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {subscriptions.map((subscription) => (
