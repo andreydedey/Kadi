@@ -5,6 +5,7 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons"
 import { AddSubscriptionDialog } from "./AddSubscriptionDialog"
+import { MarkSubscriptionAsCompletedDialog } from "./MarkSubscriptionAsCompletedDialog"
 
 type Subscription = {
   name: string
@@ -32,8 +33,7 @@ export const Subscriptions: React.FC<SubscriptionProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex gap-6 items-center">
                 <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
-                  <FontAwesomeIcon
-                    className="text-xs"
+                  <MarkSubscriptionAsCompletedDialog
                     icon={faArrowRightArrowLeft}
                   />
                 </div>
