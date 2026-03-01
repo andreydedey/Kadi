@@ -1,46 +1,14 @@
-import { Button } from "@/components/ui/button"
-import { faGear } from "@fortawesome/free-solid-svg-icons/faGear"
-import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRotateLeft"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faClipboardList } from "@fortawesome/free-solid-svg-icons/faClipboardList"
-import { ItemCard } from "@/components/ItemCard"
 import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice"
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Subscriptions } from "@/components/Subscriptions"
-import { AddTransactionDialog } from "@/components/AddTransactionDialog/AddTransactionDialog"
 import { CategoryCard } from "@/components/CategoryCard"
 import { AddCategoryLimitDialog } from "@/components/AddCategoryLimitDialog"
+import { WalletTabs } from "@/components/WalletTabs/WalletTabs"
 
 export const Wallet = () => {
   return (
     <div className="flex gap-8">
-      <div className="flex flex-3 flex-col gap-6">
-        <div className="flex justify-between">
-          <h1 className="text-xl font-medium">Inter (USD)</h1>
-          <div className="space-x-3">
-            <Button variant="outline" size="icon">
-              <FontAwesomeIcon icon={faClockRotateLeft} />
-            </Button>
-            <Button variant="outline" size="icon">
-              <FontAwesomeIcon icon={faGear} />
-            </Button>
-            <Button variant="outline" size="icon">
-              <FontAwesomeIcon icon={faClipboardList} />
-            </Button>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <h2 className="text-md">Transactions</h2>
-          <AddTransactionDialog />
-        </div>
-        <div className="space-y-4">
-          <h3 className="text-sm text-muted-foreground antialiased">
-            Jan 1, 2024
-          </h3>
-          <ItemCard amount={40} category="Food" icon={faPizzaSlice} />
-        </div>
-      </div>
+      <WalletTabs />
       <div className="space-y-6 flex-2">
         <div className="flex justify-between gap-4">
           <Card className="gap-1 border-none flex-1">
