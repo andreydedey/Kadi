@@ -2,14 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRotateLeft"
 import { faGear } from "@fortawesome/free-solid-svg-icons/faGear"
-import { faClipboardList } from "@fortawesome/free-solid-svg-icons/faClipboardList"
 import { HistoryTab } from "./tabs/HistoryTab"
+import { ReportTab } from "./tabs/ReportTab"
+import { faChartColumn } from "@fortawesome/free-solid-svg-icons"
 
 export const WalletTabs = () => {
   const tabs = [
     { title: "history", icon: faClockRotateLeft },
-    { title: "report", icon: faGear },
-    { title: "settings", icon: faClipboardList },
+    { title: "report", icon: faChartColumn },
+    { title: "settings", icon: faGear },
   ]
 
   return (
@@ -29,6 +30,9 @@ export const WalletTabs = () => {
       </div>
       <TabsContent value="history">
         <HistoryTab />
+      </TabsContent>
+      <TabsContent value="report">
+        <ReportTab />
       </TabsContent>
     </Tabs>
   )
