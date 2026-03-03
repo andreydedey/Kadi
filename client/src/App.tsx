@@ -4,6 +4,7 @@ import { AppLayout } from "./layouts/AppLayout"
 import { Wallets } from "./pages/Wallets"
 import { Wallet } from "./pages/Wallet"
 import { Settings } from "./pages/Settings"
+import { Categories } from "./pages/Categories"
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="wallets" element={<Wallets />} />
           <Route path="wallets/:id" element={<Wallet />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="categories" element={<Categories />} />
         </Route>
       </Routes>
     </>
