@@ -25,7 +25,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         <div className="flex rounded-full h-12 aspect-square items-center justify-center bg-zinc-800">
           <FontAwesomeIcon icon={icon} />
         </div>
-        <ProgressWithLabel category={category} left={66} />
+        <ProgressWithLabel category={category} spent={66} total={100} />
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon" className="group">
             <FontAwesomeIcon
