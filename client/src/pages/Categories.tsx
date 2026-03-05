@@ -1,3 +1,4 @@
+import { CategoryDialog } from "@/components/CategoryDialog"
 import { ProgressWithLabel } from "@/components/ProgressWithLabel"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -23,7 +24,7 @@ export const Categories = () => {
     <>
       <div className="flex justify-between mb-6">
         <h1 className="text-xl font-medium">Categories</h1>
-        <Button>Add Category</Button>
+        <CategoryDialog />
       </div>
       <Card className="mb-8">
         <CardContent className="flex justify-between px-12">
@@ -53,31 +54,35 @@ export const Categories = () => {
           </div>
         </CardContent>
       </Card>
-      <Table className="[&_td]:border-0 [&_th]:border-0 [&_tr]:border-0 border-separate border-spacing-x-12 border-spacing-y-4 [&_tr]:hover:bg-transparent">
+      <Table className="[&_td]:border-0 [&_th]:border-0 [&_tr]:border-0 border-separate border-spacing-y-4 [&_thead_tr]:hover:bg-transparent [&_tbody_tr]:hover:bg-card">
         <TableHeader>
           <TableRow className="text-lg border-0">
-            <TableHead className="text-muted-foreground">Category</TableHead>
-            <TableHead className="text-muted-foreground">
+            <TableHead className="text-muted-foreground px-8 py-4">
+              Category
+            </TableHead>
+            <TableHead className="text-muted-foreground px-8 py-4">
               Expense Progress
             </TableHead>
-            <TableHead className="text-muted-foreground">Actions</TableHead>
+            <TableHead className="text-muted-foreground px-8 py-4">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {categories.map((category) => (
-            <TableRow>
-              <TableCell className="space-x-4 text-lg">
+            <TableRow className="bg-card">
+              <TableCell className="space-x-4 text-lg px-8 py-6 rounded-l-xl">
                 <FontAwesomeIcon icon={category.icon} />
                 <span>{category.name}</span>
               </TableCell>
-              <TableCell className="w-2/3">
+              <TableCell className="w-2/3 px-8 py-6">
                 <ProgressWithLabel
                   category={category.name}
                   total={category.total}
                   spent={category.spent}
                 />
               </TableCell>
-              <TableCell className="space-x-4">
+              <TableCell className="space-x-4 px-8 py-6 rounded-r-xl">
                 <Button variant={"secondary"} size={"lg"}>
                   Edit
                 </Button>
