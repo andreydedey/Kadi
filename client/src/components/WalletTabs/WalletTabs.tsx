@@ -5,6 +5,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons/faGear"
 import { HistoryTab } from "./tabs/HistoryTab"
 import { ReportTab } from "./tabs/ReportTab"
 import { faChartColumn } from "@fortawesome/free-solid-svg-icons"
+import { SettingsTab } from "./tabs/SettingsTab"
 
 export const WalletTabs = () => {
   const tabs = [
@@ -33,6 +34,9 @@ export const WalletTabs = () => {
       </TabsContent>
       <TabsContent value="report">
         <ReportTab />
+      </TabsContent>
+      <TabsContent value="settings">
+        <SettingsTab />
       </TabsContent>
     </Tabs>
   )
