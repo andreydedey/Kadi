@@ -83,9 +83,7 @@ export const Categories = () => {
                 />
               </TableCell>
               <TableCell className="space-x-4 px-8 py-6 rounded-r-xl">
-                <Button variant={"secondary"} size={"lg"}>
-                  Edit
-                </Button>
+                <CategoryDialog isEditing />
                 <Button variant={"destructive"} size={"lg"}>
                   Remove
                 </Button>
