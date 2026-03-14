@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { WalletCard } from "@/components/WalletCard"
+import { RemoveAccountAlertDialog } from "@/components/RemoveAccountAlertDialog"
 
 export const Settings = () => {
   const wallets = [
@@ -29,11 +30,15 @@ export const Settings = () => {
           <div className="space-y-1">
             <h2 className="text-lg font-medium">Your Wallets</h2>
             <p className="text-md text-muted-foreground mb-2">
-              <p>You can change the order by dragging.</p>
+              You can change the order by dragging.
             </p>
             <div className="space-y-4">
               {wallets.map((wallet) => (
-                <WalletCard title={wallet.title} amount={wallet.amount} />
+                <WalletCard
+                  key={wallet.title}
+                  title={wallet.title}
+                  amount={wallet.amount}
+                />
               ))}
             </div>
           </div>
@@ -42,9 +47,7 @@ export const Settings = () => {
             <p className="text-md text-muted-foreground">
               Be aware that removing account will erase all the data you have
             </p>
-            <Button variant="destructive" className="grow">
-              Remove acoount
-            </Button>
+            <RemoveAccountAlertDialog />
           </div>
         </div>
         <div className="space-y-3 grow-4">
