@@ -22,7 +22,7 @@ export const AppSidebar = () => {
   }
 
   const menuItems = [
-    { to: "/", label: "DashBoard", icon: faBorderAll },
+    { to: "/home", label: "DashBoard", icon: faBorderAll },
     { to: "/wallets", label: "Wallets", icon: faWallet },
     { to: "/categories", label: "Categories", icon: faFolder },
     { to: "/settings", label: "Settings", icon: faGear },
