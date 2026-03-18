@@ -2,10 +2,25 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { login } from "@/services/auth"
+import { useMutation } from "@tanstack/react-query"
+import { createUserSchema } from "@/lib/schemas/createUserSchema"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export const Signup = () => {
+  const navigate = useNavigate()
+
+  const { register, handleSubmit } = useForm<createUserSchema>({
+    resolver: zodResolver(createUserSchema),
+  })
+
+  const { mutate: createUser } = useMutation({
+    mutationFn: (data: createUserSchema) => login(data),
+    onSuccess: () => navigate("/login"),
+  })
+
   return (
     <div className="flex items-center h-screen">
       <Card className="mx-auto my-auto w-full max-w-md">
@@ -15,23 +30,39 @@ export const Signup = () => {
           <h3 className="text-muted-foreground text-sm mb-6">
             Join Kadi and take control of your finances
           </h3>
-          <form action="">
+          <form onSubmit={handleSubmit((data) => createUser(data))}>
             <FieldGroup>
               <Field>
                 <FieldLabel>Full Name</FieldLabel>
-                <Input type="text" placeholder="John Doe" />
+                <Input
+                  type="text"
+                  placeholder="John Doe"
+                  {...register("name")}
+                />
               </Field>
               <Field>
                 <FieldLabel>Email</FieldLabel>
-                <Input type="email" placeholder="your@email.com" />
+                <Input
+                  type="email"
+                  placeholder="your@email.com"
+                  {...register("email")}
+                />
               </Field>
               <Field>
                 <FieldLabel>Password</FieldLabel>
-                <Input type="password" placeholder="Create your password" />
+                <Input
+                  type="password"
+                  placeholder="Create your password"
+                  {...register("password")}
+                />
               </Field>
               <Field>
                 <FieldLabel>Confirm Password</FieldLabel>
-                <Input type="password" placeholder="Repeat your password" />
+                <Input
+                  type="password"
+                  placeholder="Repeat your password"
+                  {...register("confirmPassword")}
+                />
               </Field>
             </FieldGroup>
           </form>

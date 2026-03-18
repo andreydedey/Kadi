@@ -3,13 +3,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/contexts/AuthContext"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, type LoginSchema } from "@/lib/schemas/loginSchema"
+import { useMutation } from "@tanstack/react-query"
+import { login } from "@/services/auth"
 
 export const Login = () => {
   const { setAuthenticated } = useAuth()
+  const navigate = useNavigate()
 
   const {
     register,
@@ -17,6 +20,18 @@ export const Login = () => {
     formState: { errors },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
+  })
+
+  const {
+    mutate: loginUser,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: (data: LoginSchema) => login(data),
+    onSuccess: () => {
+      setAuthenticated(true)
+      navigate("/dashboard")
+    },
   })
 
   return (
@@ -28,15 +43,23 @@ export const Login = () => {
           <h3 className="text-muted-foreground text-sm mb-6">
             Sign in to your account to continue
           </h3>
-          <form action="">
+          <form onSubmit={handleSubmit((data) => loginUser(data))}>
             <FieldGroup>
               <Field>
                 <FieldLabel>Email</FieldLabel>
-                <Input type="email" placeholder="your@email.com" />
+                <Input
+                  type="email"
+                  placeholder="your@email.com"
+                  {...register("email")}
+                />
               </Field>
               <Field>
                 <FieldLabel>Password</FieldLabel>
-                <Input type="password" placeholder="Enter your password" />
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  {...register("password")}
+                />
               </Field>
             </FieldGroup>
           </form>
