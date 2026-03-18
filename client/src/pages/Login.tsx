@@ -2,9 +2,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAuth } from "@/contexts/AuthContext"
 import { Link } from "react-router"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { loginSchema, type LoginSchema } from "@/lib/schemas/loginSchema"
 
 export const Login = () => {
+  const { setAuthenticated } = useAuth()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  })
+
   return (
     <div className="flex items-center h-screen">
       <Card className="mx-auto my-auto w-full max-w-md">
