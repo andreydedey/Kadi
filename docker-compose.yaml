@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: kadi_postgres
+    environment:
+      POSTGRES_DB: kadi
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - kadi-data:/var/lib/postgresql/data
+
+volumes:
+  kadi-data:
