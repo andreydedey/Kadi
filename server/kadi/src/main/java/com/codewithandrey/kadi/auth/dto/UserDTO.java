@@ -1,4 +1,7 @@
 package com.codewithandrey.kadi.auth.dto;
 
-public record UserResponse() {
-}
+public record UserDTO(
+        Long id,
+        String name,
+        String email
+) {}

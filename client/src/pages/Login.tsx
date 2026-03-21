@@ -14,23 +14,15 @@ export const Login = () => {
   const { setAuthenticated } = useAuth()
   const navigate = useNavigate()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginSchema>({
+  const { register, handleSubmit } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   })
 
-  const {
-    mutate: loginUser,
-    isPending,
-    isError,
-  } = useMutation({
+  const { mutate: loginUser } = useMutation({
     mutationFn: (data: LoginSchema) => login(data),
     onSuccess: () => {
       setAuthenticated(true)
-      navigate("/dashboard")
+      navigate("/home")
     },
   })
 
@@ -62,16 +54,16 @@ export const Login = () => {
                 />
               </Field>
             </FieldGroup>
+            <div className="flex flex-col gap-3 items-center mt-6">
+              <Button className="w-full" type="submit">Sign in</Button>
+              <span className="text-muted-foreground text-sm">
+                Don't have an account?{" "}
+                <Link to={"/signup"} className="text-white">
+                  Sign up
+                </Link>
+              </span>
+            </div>
           </form>
-          <div className="flex flex-col gap-3 items-center mt-6">
-            <Button className="w-full">Sign in</Button>
-            <span className="text-muted-foreground text-sm">
-              Don't have an account?{" "}
-              <Link to={"/signup"} className="text-white">
-                Sign up
-              </Link>
-            </span>
-          </div>
         </CardContent>
       </Card>
     </div>

@@ -3,22 +3,28 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Link, useNavigate } from "react-router"
-import { login } from "@/services/auth"
+import { register as registerUser } from "@/services/auth"
 import { useMutation } from "@tanstack/react-query"
 import { createUserSchema } from "@/lib/schemas/createUserSchema"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useAuth } from "@/contexts/AuthContext"
 
 export const Signup = () => {
   const navigate = useNavigate()
+  const { setAuthenticated } = useAuth()
 
   const { register, handleSubmit } = useForm<createUserSchema>({
     resolver: zodResolver(createUserSchema),
   })
 
   const { mutate: createUser } = useMutation({
-    mutationFn: (data: createUserSchema) => login(data),
-    onSuccess: () => navigate("/login"),
+    mutationFn: ({ name, email, password }: createUserSchema) =>
+      registerUser({ username: name, email, password }),
+    onSuccess: () => {
+      setAuthenticated(true)
+      navigate("/home")
+    },
   })
 
   return (
@@ -65,16 +71,16 @@ export const Signup = () => {
                 />
               </Field>
             </FieldGroup>
-          </form>
-          <div className="flex flex-col gap-3 items-center mt-6">
-            <Button className="w-full">Sign up</Button>
-            <span className="text-muted-foreground text-sm">
+            <div className="flex flex-col gap-3 items-center mt-6">
+              <Button className="w-full" type={"submit"}>Sign up</Button>
+              <span className="text-muted-foreground text-sm">
               Already have an account?{" "}
-              <Link to={"/login"} className="text-white">
+                <Link to={"/login"} className="text-white">
                 Sign in
               </Link>
             </span>
-          </div>
+            </div>
+          </form>
         </CardContent>
       </Card>
     </div>
