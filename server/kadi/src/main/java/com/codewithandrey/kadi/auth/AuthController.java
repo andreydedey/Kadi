@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,16 +23,11 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @GetMapping("me")
     public ResponseEntity<UserDTO> me(Authentication authentication) {
-       String username = authentication.getName();
-
-       User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+       User user = (User) authentication.getPrincipal();
        return ResponseEntity.ok(userMapper.toDTO(user));
     }
 
