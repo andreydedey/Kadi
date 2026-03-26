@@ -1,11 +1,19 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Link, useNavigate } from "react-router"
 import { register as registerUser } from "@/services/auth"
 import { useMutation } from "@tanstack/react-query"
-import { createUserSchema } from "@/lib/schemas/createUserSchema"
+import {
+  createUserSchema,
+  type CreateUserSchema,
+} from "@/lib/schemas/createUserSchema"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/contexts/AuthContext"
@@ -14,12 +22,16 @@ export const Signup = () => {
   const navigate = useNavigate()
   const { setAuthenticated } = useAuth()
 
-  const { register, handleSubmit } = useForm<createUserSchema>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserSchema),
   })
 
   const { mutate: createUser } = useMutation({
-    mutationFn: ({ name, email, password }: createUserSchema) =>
+    mutationFn: ({ name, email, password }: CreateUserSchema) =>
       registerUser({ username: name, email, password }),
     onSuccess: () => {
       setAuthenticated(true)
@@ -45,6 +57,7 @@ export const Signup = () => {
                   placeholder="John Doe"
                   {...register("name")}
                 />
+                <FieldError>{errors.name?.message}</FieldError>
               </Field>
               <Field>
                 <FieldLabel>Email</FieldLabel>
@@ -53,6 +66,7 @@ export const Signup = () => {
                   placeholder="your@email.com"
                   {...register("email")}
                 />
+                <FieldError>{errors.email?.message}</FieldError>
               </Field>
               <Field>
                 <FieldLabel>Password</FieldLabel>
@@ -61,6 +75,7 @@ export const Signup = () => {
                   placeholder="Create your password"
                   {...register("password")}
                 />
+                <FieldError>{errors.password?.message}</FieldError>
               </Field>
               <Field>
                 <FieldLabel>Confirm Password</FieldLabel>
@@ -69,16 +84,19 @@ export const Signup = () => {
                   placeholder="Repeat your password"
                   {...register("confirmPassword")}
                 />
+                <FieldError>{errors.confirmPassword?.message}</FieldError>
               </Field>
             </FieldGroup>
             <div className="flex flex-col gap-3 items-center mt-6">
-              <Button className="w-full" type={"submit"}>Sign up</Button>
+              <Button className="w-full" type={"submit"}>
+                Sign up
+              </Button>
               <span className="text-muted-foreground text-sm">
-              Already have an account?{" "}
+                Already have an account?{" "}
                 <Link to={"/login"} className="text-white">
-                Sign in
-              </Link>
-            </span>
+                  Sign in
+                </Link>
+              </span>
             </div>
           </form>
         </CardContent>

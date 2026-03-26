@@ -20,7 +20,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && window.location.pathname !== "/login") {
       localStorage.removeItem("token")
       window.location.href = "/login"
     }

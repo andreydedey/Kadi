@@ -1,5 +1,5 @@
 import { api } from "./api"
-import type { AuthResponse, LoginRequest, RegisterRequest, UserDTO } from "./types"
+import type { AuthResponse, LoginRequest, RegisterRequest, User } from "./types"
 
 export async function login({ email, password }: LoginRequest) {
   const { data } = await api.post<AuthResponse>("/auth/login", {
@@ -33,6 +33,6 @@ export function isAuthenticated() {
 }
 
 export async function me() {
-  const { data } = await api.get<UserDTO>("/auth/me")
+  const { data } = await api.get<User>("/auth/me")
   return data
 }

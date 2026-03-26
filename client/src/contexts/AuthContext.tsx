@@ -1,10 +1,10 @@
 import { isAuthenticated, me, logout as logoutService } from "@/services/auth"
-import type { UserDTO } from "@/services/types"
+import type { User } from "@/services/types"
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 
 interface AuthContextType {
   authenticated: boolean
-  user: UserDTO | null
+  user: User | null
   loading: boolean
   setAuthenticated: (value: boolean) => void
   logout: () => void
@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
-  const [user, setUser] = useState<UserDTO | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -29,12 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuthenticated(true)
         setLoading(false)
       })
-      .catch((error) => {
-        // sem resposta do servidor = backend fora: confia no token local
-        // qualquer resposta HTTP (401, 500, etc.) = token inválido ou erro real
-        if (!error?.response) {
-          setAuthenticated(true)
-        }
+      .catch(() => {
         setLoading(false)
       })
   }, [])

@@ -13,7 +13,7 @@ export interface AuthResponse {
   token: string
 }
 
-export interface UserDTO {
+export interface User {
   id: number
   name: string
   email: string
