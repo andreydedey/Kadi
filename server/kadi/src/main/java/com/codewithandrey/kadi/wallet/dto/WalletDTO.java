@@ -1,4 +1,11 @@
 package com.codewithandrey.kadi.wallet.dto;
 
-public record WalletDTO(String currency, Integer balance) {
+import java.util.UUID;
+
+public record WalletDTO(
+        UUID uuid,
+        String name,
+        String currency,
+        Integer balance)
+{
 }

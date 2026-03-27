@@ -2,6 +2,7 @@ package com.codewithandrey.kadi.wallet;
 
 import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
+import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
 import com.codewithandrey.kadi.wallet.mapper.WalletMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,13 @@ public class WalletService {
     @Transactional(readOnly = true)
     public WalletDTO getWallet(UUID id) {
         return walletMapper.toDTO(findOwnedWallet(id));
+    }
+
+    public WalletDTO createWallet(CreateWalletRequest createWalletRequest) {
+        Wallet wallet = walletMapper.toEntity(createWalletRequest);
+        wallet.setUser(authService.currentUser());
+        walletRepository.save(wallet);
+        return walletMapper.toDTO(wallet);
     }
 
     private Wallet findOwnedWallet(UUID id) {
