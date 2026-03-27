@@ -1,12 +1,12 @@
 package com.codewithandrey.kadi.wallet;
 
+import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
 import com.codewithandrey.kadi.wallet.mapper.WalletMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,19 +18,21 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
     private final WalletMapper walletMapper;
+    private final AuthService authService;
 
     @Transactional(readOnly = true)
     public Page<WalletDTO> listWallets(Pageable pageable) {
-        Specification<Wallet> spec = Specification.where(null);
-        Page<Wallet> page = walletRepository.findAll(spec, pageable);
-        return page.map(walletMapper::toDTO);
+        return walletRepository.findAllByUser(authService.currentUser(), pageable)
+                .map(walletMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
-    public WalletDTO getWallet(UUID uuid) {
-        var wallet = walletRepository.findById(uuid)
-                .orElseThrow(() -> new ResourceNotFoundException("wallet not found"));
+    public WalletDTO getWallet(UUID id) {
+        return walletMapper.toDTO(findOwnedWallet(id));
+    }
 
-        return walletMapper.toDTO(wallet);
+    private Wallet findOwnedWallet(UUID id) {
+        return walletRepository.findByIdAndUser(id, authService.currentUser())
+                .orElseThrow(() -> new ResourceNotFoundException("wallet not found"));
     }
 }

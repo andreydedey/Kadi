@@ -1,7 +1,9 @@
 package com.codewithandrey.kadi.auth.dto;
 
+import java.util.UUID;
+
 public record UserDTO(
-        Long id,
+        UUID id,
         String username,
         String email
 ) {}
