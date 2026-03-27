@@ -1,8 +1,11 @@
 package com.codewithandrey.kadi.wallet;
 
+import com.codewithandrey.kadi.auth.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -10,12 +13,16 @@ import lombok.Setter;
 @Table(name = "wallets")
 public class Wallet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String name;
 
     private String currency;
 
     private Integer balance;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
