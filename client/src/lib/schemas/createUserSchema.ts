@@ -1,12 +1,14 @@
 import { z } from "zod"
-
-const REQUIRED = "Required"
+import { REQUIRED } from "../consts"
 
 const createUserSchema = z
   .object({
     name: z.string().min(1, REQUIRED),
     email: z.string().min(1, REQUIRED).check(z.email("Invalid email")),
-    password: z.string().min(1, REQUIRED).min(6, "Password must contain at least 6 characters"),
+    password: z
+      .string()
+      .min(1, REQUIRED)
+      .min(6, "Password must contain at least 6 characters"),
     confirmPassword: z.string().min(1, REQUIRED),
   })
   .refine((data) => data.password === data.confirmPassword, {

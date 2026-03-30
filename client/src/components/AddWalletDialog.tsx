@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Button } from "./ui/button"
 import {
   Dialog,
@@ -7,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
-import { Field, FieldGroup, FieldLabel } from "./ui/field"
+import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field"
 import { Input } from "./ui/input"
 import {
   Select,
@@ -17,11 +16,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select"
+import { useMutation } from "@tanstack/react-query"
+import { useForm } from "react-hook-form"
+import {
+  createWalletSchema,
+  type CreateWalletSchema,
+} from "@/lib/schemas/createWalletSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Wallet } from "@/lib/types/wallet"
+import { api } from "@/services/api"
 
 export const AddWalletDialog = () => {
   const currencys = ["cash", "usd", "eur", "real", "btc"]
 
-  const [selectedCurrency, setSelectedCurrency] = useState("")
+  const createWalletRequest = async (
+    body: CreateWalletSchema,
+  ): Promise<Wallet> => {
+    const { data } = await api.post("/wallets", body)
+    return data
+  }
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CreateWalletSchema>({
+    resolver: zodResolver(createWalletSchema),
+  })
+
+  const { mutate: createWallet, isPending } = useMutation({
+    mutationFn: createWalletRequest,
+    onSuccess: () => {
+      // show sonner or toast
+      // close dialog
+    },
+  })
 
   return (
     <Dialog>
@@ -31,19 +61,27 @@ export const AddWalletDialog = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="mb-6">Add Wallet</DialogTitle>
-          <form action="">
+          <form onSubmit={handleSubmit(createWallet)}>
             <FieldGroup>
               <Field>
                 <FieldLabel>
                   Name <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input type="text" placeholder="Bank of America" />
+                <Input
+                  type="text"
+                  placeholder="Bank of America"
+                  {...register("name")}
+                />
+                <FieldError>{errors.name?.message}</FieldError>
               </Field>
               <Field>
-                <FieldLabel>Currency</FieldLabel>
+                <FieldLabel>
+                  Currency <span className="text-destructive">*</span>
+                </FieldLabel>
                 <Select
-                  value={selectedCurrency}
-                  onValueChange={setSelectedCurrency}
+                  onValueChange={(v) =>
+                    setValue("currency", v, { shouldValidate: true })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a currency" />
@@ -58,6 +96,7 @@ export const AddWalletDialog = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                <FieldError>{errors.currency?.message}</FieldError>
               </Field>
               <Field>
                 <FieldLabel>
@@ -65,12 +104,16 @@ export const AddWalletDialog = () => {
                 </FieldLabel>
                 <Input
                   type="number"
-                  placeholder={`0.00 ${selectedCurrency.toUpperCase()}`}
+                  placeholder="0.00"
                   className="no-spinners"
+                  {...register("balance", { valueAsNumber: true })}
                 />
+                <FieldError>{errors.balance?.message}</FieldError>
               </Field>
             </FieldGroup>
-            <Button className="mt-6 w-full">Save</Button>
+            <Button className="mt-6 w-full" type="submit" disabled={isPending}>
+              Save
+            </Button>
           </form>
         </DialogHeader>
       </DialogContent>
