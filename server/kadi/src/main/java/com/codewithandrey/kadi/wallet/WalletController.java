@@ -19,9 +19,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping("list")
-    public ResponseEntity<Page<WalletDTO>> listWallets(
-            Pageable pageable
-    ) {
+    public ResponseEntity<Page<WalletDTO>> listWallets(Pageable pageable) {
         return ResponseEntity.ok(walletService.listWallets(pageable));
     }
 

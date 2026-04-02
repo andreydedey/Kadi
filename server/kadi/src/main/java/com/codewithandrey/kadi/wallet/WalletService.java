@@ -35,7 +35,7 @@ public class WalletService {
     public WalletDTO createWallet(CreateWalletRequest createWalletRequest) {
         Wallet wallet = walletMapper.toEntity(createWalletRequest);
         wallet.setUser(authService.currentUser());
-        walletRepository.save(wallet);
+        wallet = walletRepository.save(wallet);
         return walletMapper.toDTO(wallet);
     }
 

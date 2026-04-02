@@ -32,7 +32,7 @@ export const AddWalletDialog = () => {
   const createWalletRequest = async (
     body: CreateWalletSchema,
   ): Promise<Wallet> => {
-    const { data } = await api.post("/wallets", body)
+    const { data } = await api.post("/wallet", body)
     return data
   }
 
@@ -61,7 +61,7 @@ export const AddWalletDialog = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="mb-6">Add Wallet</DialogTitle>
-          <form onSubmit={handleSubmit(createWallet)}>
+          <form onSubmit={handleSubmit((data) => createWallet(data))}>
             <FieldGroup>
               <Field>
                 <FieldLabel>
