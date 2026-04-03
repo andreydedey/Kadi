@@ -18,7 +18,8 @@ public class Wallet {
 
     private String name;
 
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     private Integer balance;
 

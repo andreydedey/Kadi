@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import {
   createWalletSchema,
@@ -24,10 +24,21 @@ import {
 } from "@/lib/schemas/createWalletSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Wallet } from "@/lib/types/wallet"
+import { toast } from "sonner"
 import { api } from "@/services/api"
+import { useState } from "react"
+import axios from "axios"
 
 export const AddWalletDialog = () => {
-  const currencys = ["cash", "usd", "eur", "real", "btc"]
+  const [open, setOpen] = useState(false)
+
+  const { data: currencies = [] } = useQuery<string[]>({
+    queryKey: ["currencies"],
+    queryFn: async () => {
+      const { data } = await api.get("/wallet/currencies")
+      return data
+    },
+  })
 
   const createWalletRequest = async (
     body: CreateWalletSchema,
@@ -47,14 +58,20 @@ export const AddWalletDialog = () => {
 
   const { mutate: createWallet, isPending } = useMutation({
     mutationFn: createWalletRequest,
-    onSuccess: () => {
-      // show sonner or toast
-      // close dialog
+    onSuccess: (wallet) => {
+      toast.success(`Wallet ${wallet.name} has been created`)
+      setOpen(false)
+    },
+    onError: (error) => {
+      const message = axios.isAxiosError(error)
+        ? (error.response?.data?.message ?? "Failed to create wallet")
+        : "Failed to create wallet"
+      toast.error(message)
     },
   })
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">Add Wallet</Button>
       </DialogTrigger>
@@ -88,9 +105,9 @@ export const AddWalletDialog = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {currencys.map((currency) => (
+                      {currencies.map((currency) => (
                         <SelectItem key={currency} value={currency}>
-                          {currency.toUpperCase()}
+                          {currency}
                         </SelectItem>
                       ))}
                     </SelectGroup>

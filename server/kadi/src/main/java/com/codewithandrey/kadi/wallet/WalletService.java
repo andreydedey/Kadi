@@ -1,6 +1,8 @@
 package com.codewithandrey.kadi.wallet;
 
 import com.codewithandrey.kadi.auth.AuthService;
+import com.codewithandrey.kadi.auth.User;
+import com.codewithandrey.kadi.exception.ConflictException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
@@ -33,8 +35,12 @@ public class WalletService {
     }
 
     public WalletDTO createWallet(CreateWalletRequest createWalletRequest) {
+        User user = authService.currentUser();
+        if (walletRepository.existsByNameAndUser(createWalletRequest.name(), user)) {
+            throw new ConflictException("A wallet with this name already exists");
+        }
         Wallet wallet = walletMapper.toEntity(createWalletRequest);
-        wallet.setUser(authService.currentUser());
+        wallet.setUser(user);
         wallet = walletRepository.save(wallet);
         return walletMapper.toDTO(wallet);
     }

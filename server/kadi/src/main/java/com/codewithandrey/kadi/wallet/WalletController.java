@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,6 +18,11 @@ import java.util.UUID;
 public class WalletController {
 
     private final WalletService walletService;
+
+    @GetMapping("currencies")
+    public ResponseEntity<List<Currency>> getCurrencies() {
+        return ResponseEntity.ok(List.of(Currency.values()));
+    }
 
     @GetMapping("list")
     public ResponseEntity<Page<WalletDTO>> listWallets(Pageable pageable) {
