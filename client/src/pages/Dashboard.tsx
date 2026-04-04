@@ -4,13 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { ItemCard } from "@/components/ItemCard"
 import { AddWalletDialog } from "@/components/AddWalletDialog"
+import { useQuery } from "@tanstack/react-query"
+import { getWallets } from "@/services/wallet"
 
 export const Dashboard = () => {
-  const wallets = [
-    { name: "Cash", amount: 67000 },
-    { name: "Revolut", amount: 89701 },
-    { name: "Bank of America", amount: 458111 },
-  ]
+  const { data } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: getWallets,
+  })
+
+  const wallets = data?.content ?? []
 
   return (
     <>
@@ -20,7 +23,7 @@ export const Dashboard = () => {
       </div>
       <div className="flex space-x-5 mb-6">
         {wallets.map((wallet) => (
-          <WalletCard title={wallet.name} amount={wallet.amount} />
+          <WalletCard key={wallet.id} title={wallet.name} amount={wallet.balance} currency={wallet.currency} />
         ))}
       </div>
       <div className="flex gap-8">
