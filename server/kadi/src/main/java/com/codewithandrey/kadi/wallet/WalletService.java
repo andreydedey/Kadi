@@ -2,6 +2,8 @@ package com.codewithandrey.kadi.wallet;
 
 import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.auth.User;
+import com.codewithandrey.kadi.category.WalletCategoryRepository;
+import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.exception.ConflictException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,7 @@ import java.util.UUID;
 public class WalletService {
 
     private final WalletRepository walletRepository;
+    private final WalletCategoryRepository walletCategoryRepository;
     private final WalletMapper walletMapper;
     private final AuthService authService;
 
@@ -43,6 +47,18 @@ public class WalletService {
         wallet.setUser(user);
         wallet = walletRepository.save(wallet);
         return walletMapper.toDTO(wallet);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WalletCategoryDTO> listWalletCategories(UUID walletId) {
+        Wallet wallet = findOwnedWallet(walletId);
+        return walletCategoryRepository.findByWallet(wallet).stream()
+                .map(wc -> new WalletCategoryDTO(
+                        wc.getCategory().getId(),
+                        wc.getCategory().getName(),
+                        wc.getSpendingLimit(),
+                        0))
+                .toList();
     }
 
     private Wallet findOwnedWallet(UUID id) {

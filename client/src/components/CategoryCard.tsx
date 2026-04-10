@@ -1,4 +1,5 @@
 import { ProgressWithLabel } from "./ProgressWithLabel"
+import { formatMoney } from "@/lib/utils"
 import type { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,11 +14,17 @@ import { Card, CardContent } from "./ui/card"
 interface CategoryCardProps {
   category: string
   icon: IconProp
+  spendingLimit: number
+  spent: number
+  currency: string
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
   icon,
+  spendingLimit,
+  spent,
+  currency,
 }) => {
   return (
     <Collapsible className="data-[state=open]:bg-mutedfocus-visible:ring-0 focus-visible:bg-transparent hover:bg-transparent space-y-6">
@@ -25,7 +32,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         <div className="flex rounded-full h-12 aspect-square items-center justify-center bg-zinc-800">
           <FontAwesomeIcon icon={icon} />
         </div>
-        <ProgressWithLabel category={category} spent={66} total={100} />
+        <ProgressWithLabel category={category} spent={spent} total={spendingLimit} />
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon" className="group">
             <FontAwesomeIcon
@@ -40,13 +47,10 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               Your total limit is{" "}
-              <span className="font-medium text-white">940 USD</span>
+              <span className="font-medium text-white">{formatMoney(spendingLimit, currency)}</span>
               <br />
-              Spent <span className="font-medium text-white">76.90 USD</span>{" "}
+              Spent <span className="font-medium text-white">{formatMoney(spent, currency)}</span>{" "}
               already
-              <br />
-              Spend less than{" "}
-              <span className="font-mediu text-white">66.39 USD</span> per day
             </p>
             <div className="flex gap-3">
               <Button className="w-24" variant="secondary">

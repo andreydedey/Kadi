@@ -2,7 +2,9 @@ package com.codewithandrey.kadi.category;
 
 import com.codewithandrey.kadi.wallet.Wallet;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "wallet_categories")
 public class WalletCategory {

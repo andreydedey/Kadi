@@ -4,8 +4,21 @@ import { Subscriptions } from "@/components/Subscriptions"
 import { CategoryCard } from "@/components/CategoryCard"
 import { AddCategoryLimitDialog } from "@/components/AddCategoryLimitDialog"
 import { WalletTabs } from "@/components/WalletTabs/WalletTabs"
+import type { Wallet } from "@/lib/types/wallet"
+import { formatMoney } from "@/lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import { getWalletCategories } from "@/services/wallet"
 
-export const Wallet = () => {
+interface WalletComponentProps {
+  wallet: Wallet
+}
+
+export const WalletComponent: React.FC<WalletComponentProps> = ({ wallet }) => {
+  const { data: categories = [] } = useQuery({
+    queryKey: ["wallets", wallet.id, "categories"],
+    queryFn: () => getWalletCategories(wallet.id),
+  })
+
   return (
     <div className="flex gap-8">
       <WalletTabs />
@@ -13,9 +26,11 @@ export const Wallet = () => {
         <div className="flex justify-between gap-4">
           <Card className="gap-1 border-none flex-1">
             <CardHeader className="margin">
-              <CardTitle className="font-light">Inter</CardTitle>
+              <CardTitle className="font-light">{wallet.name}</CardTitle>
             </CardHeader>
-            <CardContent className="font-medium text-xl">23483 USD</CardContent>
+            <CardContent className="font-medium text-xl">
+              {formatMoney(wallet.balance, wallet.currency)}
+            </CardContent>
           </Card>
           <Card className="gap-1 border-none flex-1">
             <CardHeader className="margin">
@@ -32,7 +47,16 @@ export const Wallet = () => {
             <AddCategoryLimitDialog />
           </CardHeader>
           <CardContent>
-            <CategoryCard category="Food" icon={faPizzaSlice} />
+            {categories.map((cat) => (
+              <CategoryCard
+                key={cat.id}
+                category={cat.name}
+                icon={faPizzaSlice}
+                spendingLimit={cat.spendingLimit}
+                spent={cat.spent}
+                currency={wallet.currency}
+              />
+            ))}
           </CardContent>
         </Card>
         <Subscriptions subscriptions={[{ name: "Netflix", amount: 32.12 }]} />

@@ -1,4 +1,4 @@
-import type { Wallet } from "@/lib/types/wallet"
+import type { Wallet, WalletCategory } from "@/lib/types/wallet"
 import { api } from "./api"
 
 export interface WalletPage {
@@ -11,5 +11,10 @@ export interface WalletPage {
 
 export const getWallets = async (): Promise<WalletPage> => {
   const { data } = await api.get<WalletPage>("/wallet/list")
+  return data
+}
+
+export const getWalletCategories = async (walletId: string): Promise<WalletCategory[]> => {
+  const { data } = await api.get<WalletCategory[]>(`/wallet/${walletId}/categories`)
   return data
 }

@@ -1,16 +1,19 @@
 import { AddWalletDialog } from "@/components/AddWalletDialog"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { formatMoney } from "@/lib/utils"
+import { getWallets } from "@/services/wallet"
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
 
 export const Wallets = () => {
-  const wallets = [
-    { name: "Cash", amount: 67000 },
-    { name: "Revolut", amount: 89701 },
-    { name: "Bank of America", amount: 458111 },
-  ]
+  const { data } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: getWallets,
+  })
+
+  const wallets = data?.content ?? []
 
   return (
     <>
@@ -25,7 +28,7 @@ export const Wallets = () => {
               <CardContent className="flex justify-between">
                 <span className="text-xl font-light">{wallet.name}</span>
                 <div className="flex gap-3 items-center">
-                  <span>{wallet.amount} USD</span>
+                  <span>{formatMoney(wallet.balance, wallet.currency)}</span>
                   <FontAwesomeIcon icon={faEllipsisVertical} />
                 </div>
               </CardContent>

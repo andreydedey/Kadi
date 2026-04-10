@@ -1,5 +1,6 @@
 package com.codewithandrey.kadi.wallet;
 
+import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class WalletController {
     @GetMapping("/{uuid}")
     public ResponseEntity<WalletDTO> getWallet(@PathVariable UUID uuid) {
         return ResponseEntity.ok(walletService.getWallet(uuid));
+    }
+
+    @GetMapping("/{uuid}/categories")
+    public ResponseEntity<List<WalletCategoryDTO>> listWalletCategories(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(walletService.listWalletCategories(uuid));
     }
 
     @PostMapping
