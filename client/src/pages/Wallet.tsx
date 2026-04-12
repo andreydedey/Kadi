@@ -4,20 +4,25 @@ import { Subscriptions } from "@/components/Subscriptions"
 import { CategoryCard } from "@/components/CategoryCard"
 import { AddCategoryLimitDialog } from "@/components/AddCategoryLimitDialog"
 import { WalletTabs } from "@/components/WalletTabs/WalletTabs"
-import type { Wallet } from "@/lib/types/wallet"
 import { formatMoney } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
-import { getWalletCategories } from "@/services/wallet"
+import { getWallet, getWalletCategories } from "@/services/wallet"
+import { useParams } from "react-router"
 
-interface WalletComponentProps {
-  wallet: Wallet
-}
+export const WalletPage = () => {
+  const { id } = useParams<{ id: string }>()
 
-export const WalletComponent: React.FC<WalletComponentProps> = ({ wallet }) => {
-  const { data: categories = [] } = useQuery({
-    queryKey: ["wallets", wallet.id, "categories"],
-    queryFn: () => getWalletCategories(wallet.id),
+  const { data: wallet } = useQuery({
+    queryKey: ["wallets", id],
+    queryFn: () => getWallet(id!),
   })
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ["wallets", id, "categories"],
+    queryFn: () => getWalletCategories(id!),
+  })
+
+  if (!wallet) return null
 
   return (
     <div className="flex gap-8">

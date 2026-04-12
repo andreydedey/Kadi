@@ -3,6 +3,7 @@ package com.codewithandrey.kadi.wallet;
 import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.auth.User;
 import com.codewithandrey.kadi.category.WalletCategoryRepository;
+import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.exception.ConflictException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
@@ -59,6 +60,19 @@ public class WalletService {
                         wc.getSpendingLimit(),
                         0))
                 .toList();
+    }
+
+    @Transactional
+    public WalletCategoryDTO createWalletCategoryLimit(
+            UUID walletId,
+            Long categoryId,
+            CreateWalletCategoryRequest createWalletCategoryRequest
+    ) {
+        var wallet = findOwnedWallet(walletId);
+        var walletCategory = walletCategoryRepository.findByWalletIdAndCategoryId(walletId, categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+
     }
 
     private Wallet findOwnedWallet(UUID id) {

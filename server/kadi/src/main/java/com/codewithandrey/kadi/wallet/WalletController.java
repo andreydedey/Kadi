@@ -1,5 +1,6 @@
 package com.codewithandrey.kadi.wallet;
 
+import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
@@ -35,14 +36,23 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getWallet(uuid));
     }
 
+    @PostMapping
+    public ResponseEntity<WalletDTO> createWallet(@RequestBody CreateWalletRequest createWalletRequest) {
+        WalletDTO createdWallet = walletService.createWallet(createWalletRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdWallet);
+    }
+
     @GetMapping("/{uuid}/categories")
     public ResponseEntity<List<WalletCategoryDTO>> listWalletCategories(@PathVariable UUID uuid) {
         return ResponseEntity.ok(walletService.listWalletCategories(uuid));
     }
 
-    @PostMapping
-    public ResponseEntity<WalletDTO> createWallet(@RequestBody CreateWalletRequest createWalletRequest) {
-        WalletDTO createdWallet = walletService.createWallet(createWalletRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdWallet);
+    @PostMapping("{uuid}/category/{id}/create")
+    public ResponseEntity<WalletCategoryDTO> createWalletCategoryLimit(
+            @PathVariable UUID walletId,
+            @PathVariable Long categoryId,
+            CreateWalletCategoryRequest createWalletCategoryRequest
+    ) {
+        return ResponseEntity.ok(walletService);
     }
 }

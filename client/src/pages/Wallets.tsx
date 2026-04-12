@@ -23,7 +23,7 @@ export const Wallets = () => {
       </div>
       <div className="flex flex-col space-y-5">
         {wallets.map((wallet) => (
-          <Link to={"1"}>
+          <Link to={wallet.id}>
             <Card className="w-1/3 hover:bg-accent border-0">
               <CardContent className="flex justify-between">
                 <span className="text-xl font-light">{wallet.name}</span>

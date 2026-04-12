@@ -14,6 +14,11 @@ export const getWallets = async (): Promise<WalletPage> => {
   return data
 }
 
+export const getWallet = async (walletId: string): Promise<Wallet> => {
+  const { data } = await api.get<Wallet>(`/wallet/${walletId}`)
+  return data
+}
+
 export const getWalletCategories = async (walletId: string): Promise<WalletCategory[]> => {
   const { data } = await api.get<WalletCategory[]>(`/wallet/${walletId}/categories`)
   return data
