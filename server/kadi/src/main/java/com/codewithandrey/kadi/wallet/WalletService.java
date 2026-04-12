@@ -5,6 +5,7 @@ import com.codewithandrey.kadi.auth.User;
 import com.codewithandrey.kadi.category.WalletCategoryRepository;
 import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
+import com.codewithandrey.kadi.category.mapper.WalletCategoryMapper;
 import com.codewithandrey.kadi.exception.ConflictException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
@@ -26,6 +27,7 @@ public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletCategoryRepository walletCategoryRepository;
     private final WalletMapper walletMapper;
+    private final WalletCategoryMapper walletCategoryMapper;
     private final AuthService authService;
 
     @Transactional(readOnly = true)
@@ -58,7 +60,7 @@ public class WalletService {
                         wc.getCategory().getId(),
                         wc.getCategory().getName(),
                         wc.getSpendingLimit(),
-                        0))
+                        0L))
                 .toList();
     }
 
@@ -68,11 +70,14 @@ public class WalletService {
             Long categoryId,
             CreateWalletCategoryRequest createWalletCategoryRequest
     ) {
-        var wallet = findOwnedWallet(walletId);
-        var walletCategory = walletCategoryRepository.findByWalletIdAndCategoryId(walletId, categoryId)
+        findOwnedWallet(walletId);
+        walletCategoryRepository.findByWalletIdAndCategoryId(walletId, categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
+        var walletCategoryEntity = walletCategoryMapper.toEntity(createWalletCategoryRequest);
+        walletCategoryEntity = walletCategoryRepository.save(walletCategoryEntity);
 
+        return walletCategoryMapper.toDTO(walletCategoryEntity);
     }
 
     private Wallet findOwnedWallet(UUID id) {
