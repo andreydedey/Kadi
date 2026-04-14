@@ -23,3 +23,16 @@ export const getWalletCategories = async (walletId: string): Promise<WalletCateg
   const { data } = await api.get<WalletCategory[]>(`/wallet/${walletId}/categories`)
   return data
 }
+
+export interface CreateWalletCategoryRequest {
+  categoryId: number
+  spendingLimit: number
+}
+
+export const createWalletCategory = async (
+  walletId: string,
+  body: CreateWalletCategoryRequest,
+): Promise<WalletCategory> => {
+  const { data } = await api.post<WalletCategory>(`/wallet/${walletId}/categories`, body)
+  return data
+}

@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse("Email already in use"));
+                .body(new ErrorResponse(ex.getMostSpecificCause().getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

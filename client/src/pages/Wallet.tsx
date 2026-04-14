@@ -49,7 +49,7 @@ export const WalletPage = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <AddCategoryLimitDialog />
+            <AddCategoryLimitDialog walletId={id!} />
           </CardHeader>
           <CardContent>
             {categories.map((cat) => (

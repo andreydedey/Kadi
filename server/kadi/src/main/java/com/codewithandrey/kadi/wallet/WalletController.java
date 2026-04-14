@@ -47,12 +47,11 @@ public class WalletController {
         return ResponseEntity.ok(walletService.listWalletCategories(uuid));
     }
 
-    @PostMapping("{uuid}/category/{id}/create")
+    @PostMapping("/{uuid}/categories")
     public ResponseEntity<WalletCategoryDTO> createWalletCategoryLimit(
-            @PathVariable UUID walletId,
-            @PathVariable Long categoryId,
-            CreateWalletCategoryRequest createWalletCategoryRequest
+            @PathVariable UUID uuid,
+            @RequestBody CreateWalletCategoryRequest request
     ) {
-        return ResponseEntity.ok(walletService);
+        return ResponseEntity.status(HttpStatus.CREATED).body(walletService.createWalletCategoryLimit(uuid, request));
     }
 }

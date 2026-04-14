@@ -2,6 +2,10 @@ package com.codewithandrey.kadi.wallet;
 
 import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.auth.User;
+import com.codewithandrey.kadi.category.Category;
+import com.codewithandrey.kadi.category.CategoryRepository;
+import com.codewithandrey.kadi.category.WalletCategory;
+import com.codewithandrey.kadi.category.WalletCategoryId;
 import com.codewithandrey.kadi.category.WalletCategoryRepository;
 import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
@@ -26,6 +30,7 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
     private final WalletCategoryRepository walletCategoryRepository;
+    private final CategoryRepository categoryRepository;
     private final WalletMapper walletMapper;
     private final WalletCategoryMapper walletCategoryMapper;
     private final AuthService authService;
@@ -65,19 +70,19 @@ public class WalletService {
     }
 
     @Transactional
-    public WalletCategoryDTO createWalletCategoryLimit(
-            UUID walletId,
-            Long categoryId,
-            CreateWalletCategoryRequest createWalletCategoryRequest
-    ) {
-        findOwnedWallet(walletId);
-        walletCategoryRepository.findByWalletIdAndCategoryId(walletId, categoryId)
+    public WalletCategoryDTO createWalletCategoryLimit(UUID walletId, CreateWalletCategoryRequest request) {
+        Wallet wallet = findOwnedWallet(walletId);
+        Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-        var walletCategoryEntity = walletCategoryMapper.toEntity(createWalletCategoryRequest);
-        walletCategoryEntity = walletCategoryRepository.save(walletCategoryEntity);
+        WalletCategory walletCategory = walletCategoryMapper.toEntity(request);
 
-        return walletCategoryMapper.toDTO(walletCategoryEntity);
+        walletCategory.setId(new WalletCategoryId(walletId, request.categoryId()));
+        walletCategory.setWallet(wallet);
+        walletCategory.setCategory(category);
+        walletCategory.setSpent(0L);
+
+        return walletCategoryMapper.toDTO(walletCategoryRepository.save(walletCategory));
     }
 
     private Wallet findOwnedWallet(UUID id) {

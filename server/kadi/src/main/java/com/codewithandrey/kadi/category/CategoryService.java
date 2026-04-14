@@ -1,17 +1,21 @@
 package com.codewithandrey.kadi.category;
 
 import com.codewithandrey.kadi.category.dto.CategoryDTO;
+import com.codewithandrey.kadi.category.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    public void list(Pageable pageable) {
-        return;
+    public List<CategoryDTO> list() {
+        return categoryRepository.findAll().stream()
+                .map(categoryMapper::toDTO)
+                .toList();
     }
 }
