@@ -17,7 +17,7 @@ export const WalletPage = () => {
     queryFn: () => getWallet(id!),
   })
 
-  const { data: categories = [] } = useQuery({
+  const { data: categories = [], refetch: refetchCategories } = useQuery({
     queryKey: ["wallets", id, "categories"],
     queryFn: () => getWalletCategories(id!),
   })
@@ -49,17 +49,19 @@ export const WalletPage = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <AddCategoryLimitDialog walletId={id!} />
+            <AddCategoryLimitDialog walletId={id!} onSuccess={refetchCategories} />
           </CardHeader>
           <CardContent>
             {categories.map((cat) => (
               <CategoryCard
                 key={cat.id}
+                id={cat.id}
                 category={cat.name}
                 icon={faPizzaSlice}
                 spendingLimit={cat.spendingLimit}
                 spent={cat.spent}
                 currency={wallet.currency}
+                onSuccess={refetchCategories}
               />
             ))}
           </CardContent>

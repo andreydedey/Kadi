@@ -10,21 +10,26 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible"
 import { Card, CardContent } from "./ui/card"
+import { RemoveCategoryLimitDialog } from "./RemoveCategoryLimitDialog"
 
 interface CategoryCardProps {
+  id: number
   category: string
   icon: IconProp
   spendingLimit: number
   spent: number
   currency: string
+  onSuccess?: () => void
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
+  id,
   category,
   icon,
   spendingLimit,
   spent,
   currency,
+  onSuccess,
 }) => {
   return (
     <Collapsible className="data-[state=open]:bg-mutedfocus-visible:ring-0 focus-visible:bg-transparent hover:bg-transparent space-y-6">
@@ -56,9 +61,11 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
               <Button className="w-24" variant="secondary">
                 Edit
               </Button>
-              <Button className="w-24" variant="destructive">
-                Remove
-              </Button>
+              <RemoveCategoryLimitDialog
+                id={id}
+                category={category}
+                onSuccess={onSuccess}
+              />
             </div>
           </CardContent>
         </Card>

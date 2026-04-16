@@ -85,6 +85,14 @@ public class WalletService {
         return walletCategoryMapper.toDTO(walletCategoryRepository.save(walletCategory));
     }
 
+    @Transactional
+    public void deleteWalletCategoryLimit(UUID walletId, Long categoryId) {
+        WalletCategory walletCategory = walletCategoryRepository
+                .findByWalletIdAndCategoryId(walletId, categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category limit not found"));
+        walletCategoryRepository.delete(walletCategory);
+    }
+
     private Wallet findOwnedWallet(UUID id) {
         return walletRepository.findByIdAndUser(id, authService.currentUser())
                 .orElseThrow(() -> new ResourceNotFoundException("wallet not found"));

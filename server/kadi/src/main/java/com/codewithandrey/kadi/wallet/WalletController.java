@@ -47,6 +47,15 @@ public class WalletController {
         return ResponseEntity.ok(walletService.listWalletCategories(uuid));
     }
 
+    @DeleteMapping("/{uuid}/categories/{categoryId}")
+    public ResponseEntity<Void> deleteWalletCategoryLimit(
+            @PathVariable UUID uuid,
+            @PathVariable Long categoryId
+    ) {
+        walletService.deleteWalletCategoryLimit(uuid, categoryId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{uuid}/categories")
     public ResponseEntity<WalletCategoryDTO> createWalletCategoryLimit(
             @PathVariable UUID uuid,

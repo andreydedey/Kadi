@@ -13,7 +13,7 @@ import {
 } from "./ui/select"
 import { useState } from "react"
 import { Input } from "./ui/input"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getCategories } from "@/services/category"
 import { createWalletCategory } from "@/services/wallet"
 import { toast } from "sonner"
@@ -27,9 +27,10 @@ import {
 
 interface AddCategoryLimitDialogProps {
   walletId: string
+  onSuccess?: () => void
 }
 
-export const AddCategoryLimitDialog = ({ walletId }: AddCategoryLimitDialogProps) => {
+export const AddCategoryLimitDialog = ({ walletId, onSuccess }: AddCategoryLimitDialogProps) => {
   const [open, setOpen] = useState(false)
 
   const { data: categories = [] } = useQuery({
@@ -50,6 +51,7 @@ export const AddCategoryLimitDialog = ({ walletId }: AddCategoryLimitDialogProps
     mutationFn: (data: CreateWalletCategorySchema) => createWalletCategory(walletId, data),
     onSuccess: () => {
       toast.success("Category limit added")
+      onSuccess?.()
       setOpen(false)
     },
     onError: (error) => {

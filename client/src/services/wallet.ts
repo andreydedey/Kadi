@@ -29,6 +29,10 @@ export interface CreateWalletCategoryRequest {
   spendingLimit: number
 }
 
+export const deleteWalletCategory = async (walletId: string, categoryId: number): Promise<void> => {
+  await api.delete(`/wallet/${walletId}/categories/${categoryId}`)
+}
+
 export const createWalletCategory = async (
   walletId: string,
   body: CreateWalletCategoryRequest,
