@@ -8,6 +8,7 @@ import com.codewithandrey.kadi.category.WalletCategory;
 import com.codewithandrey.kadi.category.WalletCategoryId;
 import com.codewithandrey.kadi.category.WalletCategoryRepository;
 import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
+import com.codewithandrey.kadi.category.dto.UpdateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.category.mapper.WalletCategoryMapper;
 import com.codewithandrey.kadi.exception.ConflictException;
@@ -81,6 +82,27 @@ public class WalletService {
         walletCategory.setWallet(wallet);
         walletCategory.setCategory(category);
         walletCategory.setSpent(0L);
+
+        return walletCategoryMapper.toDTO(walletCategoryRepository.save(walletCategory));
+    }
+
+    @Transactional
+    public WalletCategoryDTO updateWalletCategoryLimit(UUID walletId, Long categoryId, UpdateWalletCategoryRequest request) {
+        WalletCategory existing = walletCategoryRepository
+                .findByWalletIdAndCategoryId(walletId, categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category limit not found"));
+        walletCategoryRepository.delete(existing);
+
+        Wallet wallet = findOwnedWallet(walletId);
+        Category newCategory = categoryRepository.findById(request.categoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        WalletCategory walletCategory = new WalletCategory();
+        walletCategory.setId(new WalletCategoryId(walletId, request.categoryId()));
+        walletCategory.setWallet(wallet);
+        walletCategory.setCategory(newCategory);
+        walletCategory.setSpendingLimit(request.spendingLimit());
+        walletCategory.setSpent(existing.getSpent());
 
         return walletCategoryMapper.toDTO(walletCategoryRepository.save(walletCategory));
     }

@@ -1,6 +1,7 @@
 package com.codewithandrey.kadi.wallet;
 
 import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
+import com.codewithandrey.kadi.category.dto.UpdateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
@@ -54,6 +55,15 @@ public class WalletController {
     ) {
         walletService.deleteWalletCategoryLimit(uuid, categoryId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{uuid}/categories/{categoryId}")
+    public ResponseEntity<WalletCategoryDTO> updateWalletCategoryLimit(
+            @PathVariable UUID uuid,
+            @PathVariable Long categoryId,
+            @RequestBody UpdateWalletCategoryRequest request
+    ) {
+        return ResponseEntity.ok(walletService.updateWalletCategoryLimit(uuid, categoryId, request));
     }
 
     @PostMapping("/{uuid}/categories")

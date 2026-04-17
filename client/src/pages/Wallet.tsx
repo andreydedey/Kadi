@@ -2,7 +2,7 @@ import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Subscriptions } from "@/components/Subscriptions"
 import { CategoryCard } from "@/components/CategoryCard"
-import { AddCategoryLimitDialog } from "@/components/AddCategoryLimitDialog"
+import { CategoryLimitDialog } from "@/components/CategoryLimitDialog"
 import { WalletTabs } from "@/components/WalletTabs/WalletTabs"
 import { formatMoney } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
@@ -49,7 +49,7 @@ export const WalletPage = () => {
             <h3 className="text-md text-muted-foreground antialiased">
               Limits by Category
             </h3>
-            <AddCategoryLimitDialog walletId={id!} onSuccess={refetchCategories} />
+            <CategoryLimitDialog onSuccess={refetchCategories} />
           </CardHeader>
           <CardContent>
             {categories.map((cat) => (

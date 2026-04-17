@@ -40,3 +40,12 @@ export const createWalletCategory = async (
   const { data } = await api.post<WalletCategory>(`/wallet/${walletId}/categories`, body)
   return data
 }
+
+export const updateWalletCategory = async (
+  walletId: string,
+  categoryId: number,
+  body: CreateWalletCategoryRequest,
+): Promise<WalletCategory> => {
+  const { data } = await api.put<WalletCategory>(`/wallet/${walletId}/categories/${categoryId}`, body)
+  return data
+}

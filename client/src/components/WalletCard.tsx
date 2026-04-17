@@ -13,7 +13,9 @@ export const WalletCard = ({ title, amount, currency }: WalletCardProps) => {
       <CardHeader className="margin">
         <CardTitle className="font-light">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="font-medium text-xl">{formatMoney(amount, currency)}</CardContent>
+      <CardContent className="font-medium text-xl">
+        {formatMoney(amount, currency)}
+      </CardContent>
     </Card>
   )
 }

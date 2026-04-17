@@ -13,25 +13,31 @@ import {
 } from "./ui/select"
 import { useState } from "react"
 import { Input } from "./ui/input"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/services/category"
-import { createWalletCategory } from "@/services/wallet"
+import { createWalletCategory, updateWalletCategory } from "@/services/wallet"
 import { toast } from "sonner"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  createWalletCategorySchema,
-  type CreateWalletCategorySchema,
-} from "@/lib/schemas/createWalletCategorySchema"
+import { walletCategorySchema, type WalletCategorySchema } from "@/lib/schemas/walletCategorySchema"
+import { useParams } from "react-router"
 
-interface AddCategoryLimitDialogProps {
-  walletId: string
-  onSuccess?: () => void
+interface EditingCategory {
+  id: number
+  categoryId: number
+  categoryName: string
+  spendingLimit: number
 }
 
-export const AddCategoryLimitDialog = ({ walletId, onSuccess }: AddCategoryLimitDialogProps) => {
+interface CategoryLimitDialogProps {
+  onSuccess?: () => void
+  editing?: EditingCategory
+}
+
+export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogProps) => {
   const [open, setOpen] = useState(false)
+  const { id: walletId } = useParams<{ id: string }>()
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
@@ -42,40 +48,65 @@ export const AddCategoryLimitDialog = ({ walletId, onSuccess }: AddCategoryLimit
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<CreateWalletCategorySchema>({
-    resolver: zodResolver(createWalletCategorySchema),
+  } = useForm<WalletCategorySchema>({
+    resolver: zodResolver(walletCategorySchema),
+    defaultValues: editing
+      ? { categoryId: editing.categoryId, spendingLimit: editing.spendingLimit }
+      : undefined,
   })
 
-  const { mutate: addLimit, isPending } = useMutation({
-    mutationFn: (data: CreateWalletCategorySchema) => createWalletCategory(walletId, data),
+  const { mutate: saveLimit, isPending } = useMutation({
+    mutationFn: (data: WalletCategorySchema) =>
+      editing
+        ? updateWalletCategory(walletId!, editing.id, data)
+        : createWalletCategory(walletId!, data),
     onSuccess: () => {
-      toast.success("Category limit added")
+      toast.success(editing ? "Category limit updated" : "Category limit added")
       onSuccess?.()
       setOpen(false)
+      reset()
     },
     onError: (error) => {
       const message = axios.isAxiosError(error)
-        ? (error.response?.data?.message ?? "Failed to add category limit")
-        : "Failed to add category limit"
+        ? (error.response?.data?.message ?? "Failed to save category limit")
+        : "Failed to save category limit"
       toast.error(message)
     },
   })
 
+  const handleOpen = () => {
+    if (editing) {
+      setValue("categoryId", editing.categoryId)
+      setValue("spendingLimit", editing.spendingLimit)
+    }
+    setOpen(true)
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
-        <FontAwesomeIcon icon={faPlus} />
-      </Button>
+      {editing ? (
+        <Button variant="secondary" className="w-24" onClick={handleOpen}>
+          Edit
+        </Button>
+      ) : (
+        <Button variant="ghost" size="icon" onClick={handleOpen}>
+          <FontAwesomeIcon icon={faPlus} />
+        </Button>
+      )}
       <DialogContent>
-        <DialogHeader>Add Limits by Category</DialogHeader>
-        <form onSubmit={handleSubmit((data) => addLimit(data))}>
+        <DialogHeader>{editing ? "Edit Category Limit" : "Add Limits by Category"}</DialogHeader>
+        <form onSubmit={handleSubmit((data) => saveLimit(data))}>
           <FieldGroup>
             <Field>
               <FieldLabel>
                 Category <span className="text-destructive">*</span>
               </FieldLabel>
-              <Select onValueChange={(v) => setValue("categoryId", Number(v), { shouldValidate: true })}>
+              <Select
+                defaultValue={editing ? String(editing.categoryId) : undefined}
+                onValueChange={(v) => setValue("categoryId", Number(v), { shouldValidate: true })}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>

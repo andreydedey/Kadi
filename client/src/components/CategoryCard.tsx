@@ -11,6 +11,7 @@ import {
 } from "./ui/collapsible"
 import { Card, CardContent } from "./ui/card"
 import { RemoveCategoryLimitDialog } from "./RemoveCategoryLimitDialog"
+import { CategoryLimitDialog } from "./CategoryLimitDialog"
 
 interface CategoryCardProps {
   id: number
@@ -37,7 +38,11 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         <div className="flex rounded-full h-12 aspect-square items-center justify-center bg-zinc-800">
           <FontAwesomeIcon icon={icon} />
         </div>
-        <ProgressWithLabel category={category} spent={spent} total={spendingLimit} />
+        <ProgressWithLabel
+          category={category}
+          spent={spent}
+          total={spendingLimit}
+        />
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon" className="group">
             <FontAwesomeIcon
@@ -48,19 +53,30 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         </CollapsibleTrigger>
       </div>
       <CollapsibleContent>
-        <Card className="border-0 bg-background-secondary">
+        <Card className="border-0 bg-background-secondary mb-3">
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               Your total limit is{" "}
-              <span className="font-medium text-white">{formatMoney(spendingLimit, currency)}</span>
+              <span className="font-medium text-white">
+                {formatMoney(spendingLimit, currency)}
+              </span>
               <br />
-              Spent <span className="font-medium text-white">{formatMoney(spent, currency)}</span>{" "}
+              Spent{" "}
+              <span className="font-medium text-white">
+                {formatMoney(spent, currency)}
+              </span>{" "}
               already
             </p>
             <div className="flex gap-3">
-              <Button className="w-24" variant="secondary">
-                Edit
-              </Button>
+              <CategoryLimitDialog
+                editing={{
+                  id,
+                  categoryId: id,
+                  categoryName: category,
+                  spendingLimit,
+                }}
+                onSuccess={onSuccess}
+              />
               <RemoveCategoryLimitDialog
                 id={id}
                 category={category}
