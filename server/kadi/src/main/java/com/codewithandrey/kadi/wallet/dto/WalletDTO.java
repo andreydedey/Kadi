@@ -8,6 +8,6 @@ public record WalletDTO(
         UUID id,
         String name,
         Currency currency,
-        Integer balance)
+        Long balance)
 {
 }

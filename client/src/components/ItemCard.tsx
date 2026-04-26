@@ -2,18 +2,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Card, CardContent, CardDescription } from "./ui/card"
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical"
 import type { IconProp } from "@fortawesome/fontawesome-svg-core"
+import type { TransactionType } from "@/lib/types/transaction"
 
 interface ItemCardProps {
   amount: number
   category: string
   icon: IconProp
+  type: TransactionType
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({
-  amount,
-  category,
-  icon,
-}) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ amount, category, icon, type }) => {
+  const isExpense = type === "EXPENSE"
+
   return (
     <Card>
       <CardContent className="flex items-center justify-between">
@@ -22,7 +22,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             <FontAwesomeIcon className="text-xs" icon={icon} />
           </div>
           <div className="flex flex-col">
-            <strong className="text-green-400">+{amount} USD</strong>
+            <strong className={isExpense ? "text-destructive" : "text-green-400"}>
+              {isExpense ? "-" : "+"}{amount} USD
+            </strong>
             <CardDescription>{category}</CardDescription>
           </div>
         </div>

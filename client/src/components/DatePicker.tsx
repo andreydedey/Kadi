@@ -16,6 +16,7 @@ interface DatePickerProps {
   className?: string
   placeholder?: string
   label: string
+  onSelect?: (date: Date | undefined) => void
 }
 
 export function DatePicker({
@@ -23,8 +24,14 @@ export function DatePicker({
   className,
   placeholder = "Pick a date",
   label,
+  onSelect,
 }: DatePickerProps) {
   const [date, setDate] = useState<Date>()
+
+  const handleSelect = (date: Date | undefined) => {
+    setDate(date)
+    onSelect?.(date)
+  }
 
   return (
     <Field className={className}>
@@ -43,7 +50,7 @@ export function DatePicker({
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onSelect={handleSelect}
             defaultMonth={date}
           />
         </PopoverContent>

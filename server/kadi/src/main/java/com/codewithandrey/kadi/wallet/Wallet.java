@@ -21,7 +21,7 @@ public class Wallet {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    private Integer balance;
+    private Long balance;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
