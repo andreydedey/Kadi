@@ -3,6 +3,7 @@ import { ItemCard } from "@/components/ItemCard"
 import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice"
 import { useQuery } from "@tanstack/react-query"
 import { getTransactions } from "@/services/transaction"
+import { getWallet } from "@/services/wallet"
 import { useParams } from "react-router"
 import { format } from "date-fns"
 

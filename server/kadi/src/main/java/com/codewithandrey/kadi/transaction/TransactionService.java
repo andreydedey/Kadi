@@ -8,6 +8,7 @@ import com.codewithandrey.kadi.transaction.dto.TransactionDetailDTO;
 import com.codewithandrey.kadi.transaction.mapper.TransactionMapper;
 import com.codewithandrey.kadi.wallet.Wallet;
 import com.codewithandrey.kadi.wallet.WalletRepository;
+import com.codewithandrey.kadi.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class TransactionService {
     private final WalletRepository walletRepository;
     private final CategoryRepository categoryRepository;
     private final TransactionMapper transactionMapper;
+    private final WalletService walletService;
 
     @Transactional(readOnly = true)
     public List<TransactionDetailDTO> listByWallet(UUID walletId) {
@@ -35,33 +37,30 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionDTO create(UUID walletId, TransactionDTO request) {
+    public TransactionDTO create(UUID walletId, TransactionDTO transactionDTO) {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new ResourceNotFoundException("Wallet not found"));
 
-        Transaction transaction = transactionMapper.toEntity(request);
+        Transaction transaction = transactionMapper.toEntity(transactionDTO);
         transaction.setWallet(wallet);
 
-        if (request.categoryId() != null) {
-            Category category = categoryRepository.findById(request.categoryId())
+        if (transactionDTO.categoryId() != null) {
+            Category category = categoryRepository.findById(transactionDTO.categoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
             transaction.setCategory(category);
         }
 
-        if (request.destinationWalletId() != null) {
-            Wallet destinationWallet = walletRepository.findById(request.destinationWalletId())
+        if (transactionDTO.destinationWalletId() != null) {
+            Wallet destinationWallet = walletRepository.findById(transactionDTO.destinationWalletId())
                     .orElseThrow(() -> new ResourceNotFoundException("Destination wallet not found"));
             transaction.setDestinationWallet(destinationWallet);
-            destinationWallet.setBalance(destinationWallet.getBalance() + request.destinationAmount());
-            walletRepository.save(destinationWallet);
+            walletService.changeBalance(destinationWallet, transactionDTO.destinationAmount());
         }
 
-        switch (request.type()) {
-            case EXPENSE -> wallet.setBalance(wallet.getBalance() - request.amount());
-            case INCOME -> wallet.setBalance(wallet.getBalance() + request.amount());
-            case TRANSFER -> wallet.setBalance(wallet.getBalance() - request.amount());
+        switch (transactionDTO.type()) {
+            case EXPENSE, TRANSFER -> walletService.changeBalance(wallet, -transactionDTO.amount());
+            case INCOME -> walletService.changeBalance(wallet, transactionDTO.amount());
         }
-        walletRepository.save(walleokt);
 
         return transactionMapper.toDTO(transactionRepository.save(transaction));
     }

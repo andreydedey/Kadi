@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
+import { MoneyInput } from "@/components/ui/money-input"
 import { DatePicker } from "@/components/DatePicker"
 import { useQuery } from "@tanstack/react-query"
 import { getWallets } from "@/services/wallet"

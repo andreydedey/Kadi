@@ -1,4 +1,10 @@
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field"
 import {
   Select,
   SelectContent,
@@ -13,6 +19,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/services/category"
 import type { UseFormReturn } from "react-hook-form"
 import type { TransactionSchema } from "@/lib/schemas/transactionSchema"
+import { MoneyInput } from "@/components/ui/money-input"
 
 interface TransactionTabProps {
   isExpense?: boolean
@@ -20,7 +27,11 @@ interface TransactionTabProps {
 }
 
 export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
-  const { register, setValue, formState: { errors } } = form
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = form
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
@@ -34,24 +45,31 @@ export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
           <FieldLabel className="text-muted-foreground">
             Amount <span className="text-destructive">*</span>
           </FieldLabel>
-          <Input
-            type="number"
-            placeholder="0.00"
-            className="no-spinners"
-            {...register("amount", { valueAsNumber: true })}
+          <MoneyInput
+            onChange={(cents) =>
+              setValue("amount", cents, { shouldValidate: true })
+            }
           />
           <FieldError>{errors.amount?.message}</FieldError>
         </Field>
         <Field className="flex-1">
           <FieldLabel className="text-muted-foreground">Description</FieldLabel>
-          <Input type="text" placeholder="Bought a new iPhone" {...register("description")} />
+          <Input
+            type="text"
+            placeholder="Bought a new iPhone"
+            {...register("description")}
+          />
         </Field>
       </FieldGroup>
       <Field>
         <FieldLabel className="text-muted-foreground">
           Category <span className="text-destructive">*</span>
         </FieldLabel>
-        <Select onValueChange={(v) => setValue("categoryId", Number(v), { shouldValidate: true })}>
+        <Select
+          onValueChange={(v) =>
+            setValue("categoryId", Number(v), { shouldValidate: true })
+          }
+        >
           <SelectTrigger>
             <SelectValue placeholder="Choose the category" />
           </SelectTrigger>
@@ -69,7 +87,11 @@ export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
       </Field>
       <DatePicker
         label="Event date"
-        onSelect={(date) => setValue("eventDate", date?.toISOString().split("T")[0] ?? "", { shouldValidate: true })}
+        onSelect={(date) =>
+          setValue("eventDate", date?.toISOString().split("T")[0] ?? "", {
+            shouldValidate: true,
+          })
+        }
       />
       <FieldError>{errors.eventDate?.message}</FieldError>
     </FieldSet>

@@ -12,6 +12,7 @@ import com.codewithandrey.kadi.category.dto.UpdateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.category.mapper.WalletCategoryMapper;
 import com.codewithandrey.kadi.exception.ConflictException;
+import com.codewithandrey.kadi.exception.InsufficientBalanceException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
@@ -113,6 +114,15 @@ public class WalletService {
                 .findByWalletIdAndCategoryId(walletId, categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category limit not found"));
         walletCategoryRepository.delete(walletCategory);
+    }
+
+    public void changeBalance(Wallet wallet, long delta) {
+        long newBalance = wallet.getBalance() + delta;
+        if (newBalance < 0) {
+            throw new InsufficientBalanceException();
+        }
+        wallet.setBalance(newBalance);
+        walletRepository.save(wallet);
     }
 
     private Wallet findOwnedWallet(UUID id) {
