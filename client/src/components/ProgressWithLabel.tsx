@@ -6,7 +6,7 @@ interface ProgressWithLabelProps {
   category: string
   spent: number
   total: number
-  currency: string
+  currency: NonNullable<Intl.NumberFormatOptions["currency"]>
 }
 
 export const ProgressWithLabel: React.FC<ProgressWithLabelProps> = ({

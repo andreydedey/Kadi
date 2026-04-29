@@ -10,7 +10,7 @@ interface ItemCardProps {
   category: string
   icon: IconProp
   type: TransactionType
-  currency: string
+  currency: NonNullable<Intl.NumberFormatOptions["currency"]>
 }
 
 export const ItemCard: React.FC<ItemCardProps> = ({ amount, category, icon, type, currency }) => {

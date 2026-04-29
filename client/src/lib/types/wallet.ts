@@ -2,7 +2,7 @@ export interface Wallet {
   id: string
   name: string
   balance: number
-  currency: string
+  currency: NonNullable<Intl.NumberFormatOptions["currency"]>
 }
 
 export interface WalletCategory {

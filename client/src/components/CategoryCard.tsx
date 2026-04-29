@@ -12,6 +12,7 @@ import {
 import { Card, CardContent } from "./ui/card"
 import { RemoveCategoryLimitDialog } from "./RemoveCategoryLimitDialog"
 import { CategoryLimitDialog } from "./CategoryLimitDialog"
+import { useWallet } from "@/contexts/WalletContext"
 
 interface CategoryCardProps {
   id: number
@@ -19,7 +20,6 @@ interface CategoryCardProps {
   icon: IconProp
   spendingLimit: number
   spent: number
-  currency: string
   onSuccess?: () => void
 }
 
@@ -29,9 +29,10 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   icon,
   spendingLimit,
   spent,
-  currency,
   onSuccess,
 }) => {
+  const { currency } = useWallet()
+
   return (
     <Collapsible className="data-[state=open]:bg-mutedfocus-visible:ring-0 focus-visible:bg-transparent hover:bg-transparent space-y-6">
       <div className="flex gap-3 items-center">
@@ -42,6 +43,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
           category={category}
           spent={spent}
           total={spendingLimit}
+          currency={currency}
         />
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon" className="group">

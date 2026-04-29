@@ -8,6 +8,7 @@ import { formatMoney } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 import { getWallet, getWalletCategories } from "@/services/wallet"
 import { useParams } from "react-router"
+import { WalletProvider } from "@/contexts/WalletContext"
 
 export const WalletPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -25,6 +26,7 @@ export const WalletPage = () => {
   if (!wallet) return null
 
   return (
+    <WalletProvider value={wallet}>
     <div className="flex gap-8">
       <WalletTabs />
       <div className="space-y-6 flex-2">
@@ -60,7 +62,6 @@ export const WalletPage = () => {
                 icon={faPizzaSlice}
                 spendingLimit={cat.spendingLimit}
                 spent={cat.spent}
-                currency={wallet.currency}
                 onSuccess={refetchCategories}
               />
             ))}
@@ -69,5 +70,6 @@ export const WalletPage = () => {
         <Subscriptions subscriptions={[{ name: "Netflix", amount: 32.12 }]} />
       </div>
     </div>
+    </WalletProvider>
   )
 }

@@ -80,6 +80,7 @@ export const Categories = () => {
                   category={category.name}
                   total={category.total}
                   spent={category.spent}
+                  currency={"USD"}
                 />
               </TableCell>
               <TableCell className="space-x-4 px-8 py-6 rounded-r-xl">

@@ -23,7 +23,12 @@ export const Dashboard = () => {
       </div>
       <div className="flex space-x-5 mb-6">
         {wallets.map((wallet) => (
-          <WalletCard key={wallet.id} title={wallet.name} amount={wallet.balance} currency={wallet.currency} />
+          <WalletCard
+            key={wallet.id}
+            title={wallet.name}
+            amount={wallet.balance}
+            currency={wallet.currency}
+          />
         ))}
       </div>
       <div className="flex gap-8">
@@ -31,7 +36,13 @@ export const Dashboard = () => {
           <h3 className="text-sm text-muted-foreground antialiased">
             Last Transactions
           </h3>
-          <ItemCard amount={30} category="Food" icon={faArrowRightArrowLeft} />
+          <ItemCard
+            amount={30}
+            category="Food"
+            icon={faArrowRightArrowLeft}
+            type={"EXPENSE"}
+            currency={"USD"}
+          />
         </div>
         <div className="flex flex-col gap-3 flex-1">
           <h3 className="text-sm text-muted-foreground antialiased">
