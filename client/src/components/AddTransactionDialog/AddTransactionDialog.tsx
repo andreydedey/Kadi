@@ -31,8 +31,12 @@ interface AddTransactionDialogProps {
   onSuccess?: () => void
 }
 
-export const AddTransactionDialog = ({ onSuccess }: AddTransactionDialogProps) => {
-  const [open, setOpen] = useState(false)
+interface AddTransactionContentProps {
+  onSuccess?: () => void
+  onClose: () => void
+}
+
+const AddTransactionContent = ({ onSuccess, onClose }: AddTransactionContentProps) => {
   const [activeTab, setActiveTab] = useState<TabValue>("expense")
   const { id: walletId } = useParams<{ id: string }>()
 
@@ -69,9 +73,7 @@ export const AddTransactionDialog = ({ onSuccess }: AddTransactionDialogProps) =
     onSuccess: () => {
       toast.success("Transaction saved")
       onSuccess?.()
-      setOpen(false)
-      transactionForm.reset()
-      transferForm.reset()
+      onClose()
     },
     onError: (error) => {
       const message = axios.isAxiosError(error)
@@ -84,43 +86,53 @@ export const AddTransactionDialog = ({ onSuccess }: AddTransactionDialogProps) =
   const tabs: TabValue[] = ["expense", "income", "transfer"]
 
   return (
+    <form
+      className="flex flex-col flex-1 gap-6"
+      onSubmit={
+        activeTab === "transfer"
+          ? transferForm.handleSubmit((data) => saveTransaction(data))
+          : transactionForm.handleSubmit((data) => saveTransaction(data))
+      }
+    >
+      <Tabs defaultValue="expense" onValueChange={(v) => setActiveTab(v as TabValue)}>
+        <TabsList className="w-full bg-black border-2 py-6 rounded-lg justify-between">
+          {tabs.map((tab) => (
+            <TabsTrigger key={tab} className="p-5 border-0" value={tab}>
+              {capitalize(tab)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <TabsContent value="expense">
+          <TransactionTab isExpense form={transactionForm} />
+        </TabsContent>
+        <TabsContent value="income">
+          <TransactionTab form={transactionForm} />
+        </TabsContent>
+        <TabsContent value="transfer">
+          <TransferTab form={transferForm} />
+        </TabsContent>
+      </Tabs>
+      <Button className="w-full mt-auto" type="submit" disabled={isPending}>
+        Save
+      </Button>
+    </form>
+  )
+}
+
+export const AddTransactionDialog = ({ onSuccess }: AddTransactionDialogProps) => {
+  const [open, setOpen] = useState(false)
+
+  return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button onClick={() => setOpen(true)}>Add Transaction</Button>
-      <DialogContent className="min-h-[600px] flex flex-col gap-6">
-        <DialogHeader>
-          <DialogTitle>Add Transaction</DialogTitle>
-        </DialogHeader>
-        <form
-          className="flex flex-col flex-1 gap-6"
-          onSubmit={
-            activeTab === "transfer"
-              ? transferForm.handleSubmit((data) => saveTransaction(data))
-              : transactionForm.handleSubmit((data) => saveTransaction(data))
-          }
-        >
-          <Tabs defaultValue="expense" onValueChange={(v) => setActiveTab(v as TabValue)}>
-            <TabsList className="w-full bg-black border-2 py-6 rounded-lg justify-between">
-              {tabs.map((tab) => (
-                <TabsTrigger key={tab} className="p-5 border-0" value={tab}>
-                  {capitalize(tab)}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <TabsContent value="expense">
-              <TransactionTab isExpense form={transactionForm} />
-            </TabsContent>
-            <TabsContent value="income">
-              <TransactionTab form={transactionForm} />
-            </TabsContent>
-            <TabsContent value="transfer">
-              <TransferTab form={transferForm} />
-            </TabsContent>
-          </Tabs>
-          <Button className="w-full mt-auto" type="submit" disabled={isPending}>
-            Save
-          </Button>
-        </form>
-      </DialogContent>
+      {open && (
+        <DialogContent className="min-h-[600px] flex flex-col gap-6">
+          <DialogHeader>
+            <DialogTitle>Add Transaction</DialogTitle>
+          </DialogHeader>
+          <AddTransactionContent onSuccess={onSuccess} onClose={() => setOpen(false)} />
+        </DialogContent>
+      )}
     </Dialog>
   )
 }

@@ -29,9 +29,11 @@ import { api } from "@/services/api"
 import { useState } from "react"
 import axios from "axios"
 
-export const AddWalletDialog = () => {
-  const [open, setOpen] = useState(false)
+interface AddWalletContentProps {
+  onClose: () => void
+}
 
+const AddWalletContent = ({ onClose }: AddWalletContentProps) => {
   const { data: currencies = [] } = useQuery<string[]>({
     queryKey: ["currencies"],
     queryFn: async () => {
@@ -40,9 +42,7 @@ export const AddWalletDialog = () => {
     },
   })
 
-  const createWalletRequest = async (
-    body: CreateWalletSchema,
-  ): Promise<Wallet> => {
+  const createWalletRequest = async (body: CreateWalletSchema): Promise<Wallet> => {
     const { data } = await api.post("/wallet", body)
     return data
   }
@@ -60,7 +60,7 @@ export const AddWalletDialog = () => {
     mutationFn: createWalletRequest,
     onSuccess: (wallet) => {
       toast.success(`Wallet ${wallet.name} has been created`)
-      setOpen(false)
+      onClose()
     },
     onError: (error) => {
       const message = axios.isAxiosError(error)
@@ -71,69 +71,77 @@ export const AddWalletDialog = () => {
   })
 
   return (
+    <form onSubmit={handleSubmit((data) => createWallet(data))}>
+      <FieldGroup>
+        <Field>
+          <FieldLabel>
+            Name <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            type="text"
+            placeholder="Bank of America"
+            {...register("name")}
+          />
+          <FieldError>{errors.name?.message}</FieldError>
+        </Field>
+        <Field>
+          <FieldLabel>
+            Currency <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Select
+            onValueChange={(v) => setValue("currency", v, { shouldValidate: true })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {currencies.map((currency) => (
+                  <SelectItem key={currency} value={currency}>
+                    {currency}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <FieldError>{errors.currency?.message}</FieldError>
+        </Field>
+        <Field>
+          <FieldLabel>
+            Balance <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            type="number"
+            placeholder="0.00"
+            className="no-spinners"
+            {...register("balance", { valueAsNumber: true })}
+          />
+          <FieldError>{errors.balance?.message}</FieldError>
+        </Field>
+      </FieldGroup>
+      <Button className="mt-6 w-full" type="submit" disabled={isPending}>
+        Save
+      </Button>
+    </form>
+  )
+}
+
+export const AddWalletDialog = () => {
+  const [open, setOpen] = useState(false)
+
+  return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">Add Wallet</Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="mb-6">Add Wallet</DialogTitle>
-          <form onSubmit={handleSubmit((data) => createWallet(data))}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel>
-                  Name <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  type="text"
-                  placeholder="Bank of America"
-                  {...register("name")}
-                />
-                <FieldError>{errors.name?.message}</FieldError>
-              </Field>
-              <Field>
-                <FieldLabel>
-                  Currency <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Select
-                  onValueChange={(v) =>
-                    setValue("currency", v, { shouldValidate: true })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {currencies.map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <FieldError>{errors.currency?.message}</FieldError>
-              </Field>
-              <Field>
-                <FieldLabel>
-                  Balance <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  type="number"
-                  placeholder="0.00"
-                  className="no-spinners"
-                  {...register("balance", { valueAsNumber: true })}
-                />
-                <FieldError>{errors.balance?.message}</FieldError>
-              </Field>
-            </FieldGroup>
-            <Button className="mt-6 w-full" type="submit" disabled={isPending}>
-              Save
-            </Button>
-          </form>
-        </DialogHeader>
-      </DialogContent>
+      {open && (
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="mb-6">Add Wallet</DialogTitle>
+          </DialogHeader>
+          <AddWalletContent onClose={() => setOpen(false)} />
+        </DialogContent>
+      )}
     </Dialog>
   )
 }

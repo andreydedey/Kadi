@@ -35,8 +35,13 @@ interface CategoryLimitDialogProps {
   editing?: EditingCategory
 }
 
-export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogProps) => {
-  const [open, setOpen] = useState(false)
+interface CategoryLimitContentProps {
+  onSuccess?: () => void
+  onClose: () => void
+  editing?: EditingCategory
+}
+
+const CategoryLimitContent = ({ onSuccess, onClose, editing }: CategoryLimitContentProps) => {
   const { id: walletId } = useParams<{ id: string }>()
 
   const { data: categories = [] } = useQuery({
@@ -48,7 +53,6 @@ export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogP
     register,
     handleSubmit,
     setValue,
-    reset,
     formState: { errors },
   } = useForm<WalletCategorySchema>({
     resolver: zodResolver(walletCategorySchema),
@@ -65,8 +69,7 @@ export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogP
     onSuccess: () => {
       toast.success(editing ? "Category limit updated" : "Category limit added")
       onSuccess?.()
-      setOpen(false)
-      reset()
+      onClose()
     },
     onError: (error) => {
       const message = axios.isAxiosError(error)
@@ -76,70 +79,72 @@ export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogP
     },
   })
 
-  const handleOpen = () => {
-    if (editing) {
-      setValue("categoryId", editing.categoryId)
-      setValue("spendingLimit", editing.spendingLimit)
-    }
-    setOpen(true)
-  }
+  return (
+    <form onSubmit={handleSubmit((data) => saveLimit(data))}>
+      <FieldGroup>
+        <Field>
+          <FieldLabel>
+            Category <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Select
+            defaultValue={editing ? String(editing.categoryId) : undefined}
+            onValueChange={(v) => setValue("categoryId", Number(v), { shouldValidate: true })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={String(category.id)}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <FieldError>{errors.categoryId?.message}</FieldError>
+        </Field>
+        <Field>
+          <FieldLabel>
+            Amount <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            type="number"
+            placeholder="0.00"
+            className="no-spinners"
+            {...register("spendingLimit", { valueAsNumber: true })}
+          />
+          <FieldError>{errors.spendingLimit?.message}</FieldError>
+        </Field>
+      </FieldGroup>
+      <Button className="mt-6 w-full" type="submit" disabled={isPending}>
+        Save
+      </Button>
+    </form>
+  )
+}
+
+export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogProps) => {
+  const [open, setOpen] = useState(false)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {editing ? (
-        <Button variant="secondary" className="w-24" onClick={handleOpen}>
+        <Button variant="secondary" className="w-24" onClick={() => setOpen(true)}>
           Edit
         </Button>
       ) : (
-        <Button variant="ghost" size="icon" onClick={handleOpen}>
+        <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
           <FontAwesomeIcon icon={faPlus} />
         </Button>
       )}
-      <DialogContent>
-        <DialogHeader>{editing ? "Edit Category Limit" : "Add Limits by Category"}</DialogHeader>
-        <form onSubmit={handleSubmit((data) => saveLimit(data))}>
-          <FieldGroup>
-            <Field>
-              <FieldLabel>
-                Category <span className="text-destructive">*</span>
-              </FieldLabel>
-              <Select
-                defaultValue={editing ? String(editing.categoryId) : undefined}
-                onValueChange={(v) => setValue("categoryId", Number(v), { shouldValidate: true })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={String(category.id)}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FieldError>{errors.categoryId?.message}</FieldError>
-            </Field>
-            <Field>
-              <FieldLabel>
-                Amount <span className="text-destructive">*</span>
-              </FieldLabel>
-              <Input
-                type="number"
-                placeholder="0.00"
-                className="no-spinners"
-                {...register("spendingLimit", { valueAsNumber: true })}
-              />
-              <FieldError>{errors.spendingLimit?.message}</FieldError>
-            </Field>
-          </FieldGroup>
-          <Button className="mt-6 w-full" type="submit" disabled={isPending}>
-            Save
-          </Button>
-        </form>
-      </DialogContent>
+      {open && (
+        <DialogContent>
+          <DialogHeader>{editing ? "Edit Category Limit" : "Add Limits by Category"}</DialogHeader>
+          <CategoryLimitContent onSuccess={onSuccess} onClose={() => setOpen(false)} editing={editing} />
+        </DialogContent>
+      )}
     </Dialog>
   )
 }
