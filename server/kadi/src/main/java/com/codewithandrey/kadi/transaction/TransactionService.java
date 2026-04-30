@@ -2,6 +2,8 @@ package com.codewithandrey.kadi.transaction;
 
 import com.codewithandrey.kadi.category.Category;
 import com.codewithandrey.kadi.category.CategoryRepository;
+import com.codewithandrey.kadi.category.WalletCategory;
+import com.codewithandrey.kadi.category.WalletCategoryRepository;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.transaction.dto.TransactionDTO;
 import com.codewithandrey.kadi.transaction.dto.TransactionDetailDTO;
@@ -25,6 +27,7 @@ public class TransactionService {
     private final CategoryRepository categoryRepository;
     private final TransactionMapper transactionMapper;
     private final WalletService walletService;
+    private final WalletCategoryRepository walletCategoryRepository;
 
     @Transactional(readOnly = true)
     public List<TransactionDetailDTO> listByWallet(UUID walletId) {
@@ -61,6 +64,11 @@ public class TransactionService {
             case EXPENSE, TRANSFER -> walletService.changeBalance(wallet, -transactionDTO.amount());
             case INCOME -> walletService.changeBalance(wallet, transactionDTO.amount());
         }
+
+        walletCategoryRepository.
+                findByWalletIdAndCategoryId(walletId, transactionDTO.categoryId())
+                .ifPresent(walletCategory ->
+                        walletService.changeCategoryLimit(walletCategory, transactionDTO.amount()));
 
         return transactionMapper.toDTO(transactionRepository.save(transaction));
     }

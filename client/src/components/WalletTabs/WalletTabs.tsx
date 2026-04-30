@@ -21,6 +21,7 @@ export const WalletTabs = () => {
         <TabsList className="bg-transparent space-x-1">
           {tabs.map((tab) => (
             <TabsTrigger
+              key={tab.title}
               value={tab.title}
               className="hover:bg-primary-foreground aspect-square rounded-full p-2 border-none"
             >

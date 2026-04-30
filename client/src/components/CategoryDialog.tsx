@@ -1,5 +1,5 @@
 import { Button } from "./ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "./ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Field, FieldGroup, FieldLabel } from "./ui/field"
 import { Input } from "./ui/input"
 
@@ -19,7 +19,7 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="mb-2">
-          {isEditing ? "Edit" : "Add Category"}
+          <DialogTitle>{isEditing ? "Edit" : "Add Category"}</DialogTitle>
         </DialogHeader>
         <Field>
           <FieldLabel>

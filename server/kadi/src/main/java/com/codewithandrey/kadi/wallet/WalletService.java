@@ -67,7 +67,7 @@ public class WalletService {
                         wc.getCategory().getId(),
                         wc.getCategory().getName(),
                         wc.getSpendingLimit(),
-                        0L))
+                        wc.getSpent()))
                 .toList();
     }
 
@@ -98,11 +98,10 @@ public class WalletService {
         Category newCategory = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-        WalletCategory walletCategory = new WalletCategory();
+        WalletCategory walletCategory = walletCategoryMapper.toEntity(request);
         walletCategory.setId(new WalletCategoryId(walletId, request.categoryId()));
         walletCategory.setWallet(wallet);
         walletCategory.setCategory(newCategory);
-        walletCategory.setSpendingLimit(request.spendingLimit());
         walletCategory.setSpent(existing.getSpent());
 
         return walletCategoryMapper.toDTO(walletCategoryRepository.save(walletCategory));
@@ -123,6 +122,11 @@ public class WalletService {
         }
         wallet.setBalance(newBalance);
         walletRepository.save(wallet);
+    }
+
+    public void changeCategoryLimit(WalletCategory walletCategory, long amount) {
+        walletCategory.setSpent(walletCategory.getSpent() + amount);
+        walletCategoryRepository.save(walletCategory);
     }
 
     private Wallet findOwnedWallet(UUID id) {

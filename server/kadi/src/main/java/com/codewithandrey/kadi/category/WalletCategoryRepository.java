@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface WalletCategoryRepository extends JpaRepository<WalletCategory, WalletCategoryId> {
     List<WalletCategory> findByWallet(Wallet wallet);
     Optional<WalletCategory> findByWalletIdAndCategoryId(UUID walletId, Long categoryId);
+
+    WalletCategory wallet(Wallet wallet);
 }

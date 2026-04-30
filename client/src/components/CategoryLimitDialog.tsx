@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Button } from "./ui/button"
-import { Dialog, DialogContent, DialogHeader } from "./ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog"
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus"
 import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field"
 import {
@@ -141,7 +141,7 @@ export const CategoryLimitDialog = ({ onSuccess, editing }: CategoryLimitDialogP
       )}
       {open && (
         <DialogContent>
-          <DialogHeader>{editing ? "Edit Category Limit" : "Add Limits by Category"}</DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? "Edit Category Limit" : "Add Limits by Category"}</DialogTitle></DialogHeader>
           <CategoryLimitContent onSuccess={onSuccess} onClose={() => setOpen(false)} editing={editing} />
         </DialogContent>
       )}

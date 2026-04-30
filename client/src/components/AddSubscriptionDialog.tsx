@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "./ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "./ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Field, FieldLabel } from "./ui/field"
 import { Input } from "./ui/input"
 import {
@@ -29,7 +29,7 @@ export const AddSubscriptionDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>Add Subscription</DialogHeader>
+        <DialogHeader><DialogTitle>Add Subscription</DialogTitle></DialogHeader>
         <Field>
           <FieldLabel>
             Description <span className="text-destructive">*</span>
