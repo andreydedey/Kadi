@@ -20,7 +20,7 @@ export const ProgressWithLabel: React.FC<ProgressWithLabelProps> = ({
       <FieldLabel htmlFor="progress-upload">
         <span>{category}</span>
         <div className="ml-auto flex gap-2">
-          <span className="font-medium">{formatMoney(total - spent, currency)}</span>
+          <span className="font-medium">{formatMoney(Math.max(0, total - spent), currency)}</span>
           <span className="text-muted-foreground">left</span>
         </div>
       </FieldLabel>

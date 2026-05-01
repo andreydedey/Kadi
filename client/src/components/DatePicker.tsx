@@ -16,6 +16,7 @@ interface DatePickerProps {
   className?: string
   placeholder?: string
   label: string
+  defaultValue?: Date
   onSelect?: (date: Date | undefined) => void
 }
 
@@ -24,9 +25,10 @@ export function DatePicker({
   className,
   placeholder = "Pick a date",
   label,
+  defaultValue,
   onSelect,
 }: DatePickerProps) {
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState<Date | undefined>(defaultValue)
 
   const handleSelect = (date: Date | undefined) => {
     setDate(date)

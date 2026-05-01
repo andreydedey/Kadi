@@ -29,4 +29,22 @@ public class TransactionController {
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.create(walletId, request));
     }
+
+    @PutMapping("/{transactionId}")
+    public ResponseEntity<TransactionDTO> updateTransaction(
+            @PathVariable UUID walletId,
+            @PathVariable UUID transactionId,
+            @RequestBody TransactionDTO request
+    ) {
+        return ResponseEntity.ok(transactionService.update(walletId, transactionId, request));
+    }
+
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<Void> deleteTransaction(
+            @PathVariable UUID walletId,
+            @PathVariable UUID transactionId
+    ) {
+        transactionService.delete(walletId, transactionId);
+        return ResponseEntity.noContent().build();
+    }
 }

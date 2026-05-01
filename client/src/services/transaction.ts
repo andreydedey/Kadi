@@ -23,3 +23,16 @@ export const createTransaction = async (
   const { data } = await api.post<Transaction>(`/wallet/${walletId}/transactions`, body)
   return data
 }
+
+export const updateTransaction = async (
+  walletId: string,
+  transactionId: string,
+  body: CreateTransactionRequest,
+): Promise<Transaction> => {
+  const { data } = await api.put<Transaction>(`/wallet/${walletId}/transactions/${transactionId}`, body)
+  return data
+}
+
+export const deleteTransaction = async (walletId: string, transactionId: string): Promise<void> => {
+  await api.delete(`/wallet/${walletId}/transactions/${transactionId}`)
+}

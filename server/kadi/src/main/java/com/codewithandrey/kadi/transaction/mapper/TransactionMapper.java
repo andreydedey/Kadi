@@ -13,6 +13,7 @@ public interface TransactionMapper {
     @Mapping(target = "destinationWalletId", source = "destinationWallet.id")
     TransactionDTO toDTO(Transaction transaction);
 
+    @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "destinationWalletId", source = "destinationWallet.id")
     TransactionDetailDTO toDetailDTO(Transaction transaction);

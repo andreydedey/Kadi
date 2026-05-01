@@ -9,6 +9,7 @@ public record TransactionDetailDTO(
         UUID id,
         TransactionType type,
         Long amount,
+        Long categoryId,
         String categoryName,
         UUID destinationWalletId,
         Long destinationAmount,

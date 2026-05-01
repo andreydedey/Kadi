@@ -16,12 +16,14 @@ import { getWallets } from "@/services/wallet"
 import type { UseFormReturn } from "react-hook-form"
 import type { TransferSchema } from "@/lib/schemas/transactionSchema"
 import { useParams } from "react-router"
+import { Input } from "@/components/ui/input"
 
 interface TransferTabProps {
   form: UseFormReturn<TransferSchema>
+  defaultValues?: Partial<TransferSchema>
 }
 
-export const TransferTab: React.FC<TransferTabProps> = ({ form }) => {
+export const TransferTab: React.FC<TransferTabProps> = ({ form, defaultValues }) => {
   const { register, setValue, formState: { errors } } = form
   const { id: currentWalletId } = useParams<{ id: string }>()
 
@@ -48,7 +50,10 @@ export const TransferTab: React.FC<TransferTabProps> = ({ form }) => {
       />
       <Field className="col-span-4">
         <FieldLabel className="text-muted-foreground">To</FieldLabel>
-        <Select onValueChange={(v) => setValue("destinationWalletId", v, { shouldValidate: true })}>
+        <Select
+          defaultValue={defaultValues?.destinationWalletId ?? undefined}
+          onValueChange={(v) => setValue("destinationWalletId", v, { shouldValidate: true })}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Choose the wallet" />
           </SelectTrigger>
@@ -68,11 +73,9 @@ export const TransferTab: React.FC<TransferTabProps> = ({ form }) => {
         <FieldLabel className="text-muted-foreground">
           Amount <span className="text-destructive">*</span>
         </FieldLabel>
-        <Input
-          type="number"
-          placeholder="0.00"
-          className="no-spinners"
-          {...register("amount", { valueAsNumber: true })}
+        <MoneyInput
+          defaultValue={defaultValues?.amount}
+          onChange={(cents) => setValue("amount", cents, { shouldValidate: true })}
         />
         <FieldError>{errors.amount?.message}</FieldError>
       </Field>
@@ -81,11 +84,9 @@ export const TransferTab: React.FC<TransferTabProps> = ({ form }) => {
         <FieldLabel className="text-muted-foreground">
           Amount <span className="text-destructive">*</span>
         </FieldLabel>
-        <Input
-          type="number"
-          placeholder="0.00"
-          className="no-spinners"
-          {...register("destinationAmount", { valueAsNumber: true })}
+        <MoneyInput
+          defaultValue={defaultValues?.destinationAmount ?? undefined}
+          onChange={(cents) => setValue("destinationAmount", cents, { shouldValidate: true })}
         />
         <FieldError>{errors.destinationAmount?.message}</FieldError>
       </Field>
@@ -96,6 +97,7 @@ export const TransferTab: React.FC<TransferTabProps> = ({ form }) => {
       <div className="col-span-10">
         <DatePicker
           label="Event date"
+          defaultValue={defaultValues?.eventDate ? new Date(defaultValues.eventDate) : undefined}
           onSelect={(date) => setValue("eventDate", date?.toISOString().split("T")[0] ?? "", { shouldValidate: true })}
         />
         <FieldError>{errors.eventDate?.message}</FieldError>

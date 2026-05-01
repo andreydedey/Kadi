@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "./input-group"
 
-interface MoneyInputProps extends Omit<React.ComponentProps<"input">, "onChange" | "value" | "type"> {
+interface MoneyInputProps extends Omit<React.ComponentProps<"input">, "onChange" | "value" | "type" | "defaultValue"> {
   onChange?: (cents: number) => void
+  defaultValue?: number
 }
 
-export function MoneyInput({ onChange, ...props }: MoneyInputProps) {
-  const [digits, setDigits] = useState("")
+export function MoneyInput({ onChange, defaultValue, ...props }: MoneyInputProps) {
+  const [digits, setDigits] = useState(defaultValue ? String(defaultValue) : "")
 
   const display = digits
     ? (parseInt(digits, 10) / 100).toFixed(2)

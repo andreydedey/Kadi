@@ -5,11 +5,9 @@ import { useQuery } from "@tanstack/react-query"
 import { getTransactions } from "@/services/transaction"
 import { useParams } from "react-router"
 import { format } from "date-fns"
-import { useWallet } from "@/contexts/WalletContext"
 
 export const HistoryTab = () => {
   const { id: walletId } = useParams<{ id: string }>()
-  const { currency } = useWallet()
 
   const { data: transactions = [], refetch } = useQuery({
     queryKey: ["wallets", walletId, "transactions"],
@@ -40,11 +38,9 @@ export const HistoryTab = () => {
             {items.map((transaction) => (
               <ItemCard
                 key={transaction.id}
-                amount={transaction.amount}
-                category={transaction.categoryName ?? transaction.type}
+                transaction={transaction}
                 icon={faPizzaSlice}
-                currency={currency}
-                type={transaction.type}
+                onSuccess={refetch}
               />
             ))}
           </div>

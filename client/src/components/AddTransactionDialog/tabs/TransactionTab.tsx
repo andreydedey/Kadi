@@ -24,9 +24,10 @@ import { MoneyInput } from "@/components/ui/money-input"
 interface TransactionTabProps {
   isExpense?: boolean
   form: UseFormReturn<TransactionSchema>
+  defaultValues?: Partial<TransactionSchema & { eventDate: string }>
 }
 
-export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
+export const TransactionTab: React.FC<TransactionTabProps> = ({ form, defaultValues }) => {
   const {
     register,
     setValue,
@@ -46,6 +47,7 @@ export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
             Amount <span className="text-destructive">*</span>
           </FieldLabel>
           <MoneyInput
+            defaultValue={defaultValues?.amount}
             onChange={(cents) =>
               setValue("amount", cents, { shouldValidate: true })
             }
@@ -66,6 +68,7 @@ export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
           Category <span className="text-destructive">*</span>
         </FieldLabel>
         <Select
+          defaultValue={defaultValues?.categoryId ? String(defaultValues.categoryId) : undefined}
           onValueChange={(v) =>
             setValue("categoryId", Number(v), { shouldValidate: true })
           }
@@ -87,6 +90,7 @@ export const TransactionTab: React.FC<TransactionTabProps> = ({ form }) => {
       </Field>
       <DatePicker
         label="Event date"
+        defaultValue={defaultValues?.eventDate ? new Date(defaultValues.eventDate) : undefined}
         onSelect={(date) =>
           setValue("eventDate", date?.toISOString().split("T")[0] ?? "", {
             shouldValidate: true,

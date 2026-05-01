@@ -15,6 +15,7 @@ export interface TransactionDetail {
   id: string
   type: TransactionType
   amount: number
+  categoryId: number | null
   categoryName: string | null
   destinationWalletId: string | null
   destinationAmount: number | null
