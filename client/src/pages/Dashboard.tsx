@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { WalletCard } from "@/components/WalletCard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
-import { ItemCard } from "@/components/ItemCard"
 import { AddWalletDialog } from "@/components/AddWalletDialog"
 import { useQuery } from "@tanstack/react-query"
 import { getWallets } from "@/services/wallet"
@@ -36,13 +35,6 @@ export const Dashboard = () => {
           <h3 className="text-sm text-muted-foreground antialiased">
             Last Transactions
           </h3>
-          <ItemCard
-            amount={30}
-            category="Food"
-            icon={faArrowRightArrowLeft}
-            type={"EXPENSE"}
-            currency={"USD"}
-          />
         </div>
         <div className="flex flex-col gap-3 flex-1">
           <h3 className="text-sm text-muted-foreground antialiased">

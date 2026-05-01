@@ -44,4 +44,11 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new ErrorResponse(ex.getMessage()));
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(ForbiddenException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
 }
