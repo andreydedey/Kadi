@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,8 +46,9 @@ public class CategoryService {
         Map<Long, Long> limitsMap = userCategoryLimitRepository.findByUser(user).stream()
                 .collect(Collectors.toMap(ucl -> ucl.getCategory().getId(), UserCategoryLimit::getLimit));
 
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
         Map<Long, Long> spentMap = transactionRepository
-                .sumSpentGroupedByCategoryForUser(user, SPENDING_TYPES)
+                .sumSpentGroupedByCategoryForUser(user, SPENDING_TYPES, startOfMonth, startOfMonth.plusMonths(1))
                 .stream()
                 .collect(Collectors.toMap(
                         TransactionRepository.CategorySpent::getCategoryId,
@@ -123,7 +125,8 @@ public class CategoryService {
     }
 
     private Long spentForCategory(User user, Long categoryId) {
-        return transactionRepository.sumSpentGroupedByCategoryForUser(user, SPENDING_TYPES)
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        return transactionRepository.sumSpentGroupedByCategoryForUser(user, SPENDING_TYPES, startOfMonth, startOfMonth.plusMonths(1))
                 .stream()
                 .filter(cs -> cs.getCategoryId().equals(categoryId))
                 .map(TransactionRepository.CategorySpent::getTotalSpent)

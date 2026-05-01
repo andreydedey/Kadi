@@ -2,6 +2,7 @@ package com.codewithandrey.kadi.transaction;
 
 import com.codewithandrey.kadi.transaction.dto.TransactionDTO;
 import com.codewithandrey.kadi.transaction.dto.TransactionDetailDTO;
+import com.codewithandrey.kadi.transaction.dto.WeeklyTransactionSummaryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,11 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<List<TransactionDetailDTO>> listTransactions(@PathVariable UUID walletId) {
         return ResponseEntity.ok(transactionService.listByWallet(walletId));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<List<WeeklyTransactionSummaryDTO>> listWeeklySummary(@PathVariable UUID walletId) {
+        return ResponseEntity.ok(transactionService.listWeeklySummary(walletId));
     }
 
     @PostMapping

@@ -1,4 +1,4 @@
-import type { Transaction, TransactionDetail, TransactionType } from "@/lib/types/transaction"
+import type { Transaction, TransactionDetail, TransactionType, WeeklyTransactionSummary } from "@/lib/types/transaction"
 import { api } from "./api"
 
 export interface CreateTransactionRequest {
@@ -35,4 +35,9 @@ export const updateTransaction = async (
 
 export const deleteTransaction = async (walletId: string, transactionId: string): Promise<void> => {
   await api.delete(`/wallet/${walletId}/transactions/${transactionId}`)
+}
+
+export const getTransactionsSummary = async (walletId: string): Promise<WeeklyTransactionSummary[]> => {
+  const { data } = await api.get<WeeklyTransactionSummary[]>(`/wallet/${walletId}/transactions/summary`)
+  return data
 }
