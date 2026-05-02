@@ -15,10 +15,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import { getCategoriesDetail } from "@/services/category"
 import { formatMoney } from "@/lib/utils"
-
-const DISPLAY_CURRENCY = "USD"
+import { useAuth } from "@/contexts/AuthContext"
 
 export const Categories = () => {
+  const { user } = useAuth()
+  const displayCurrency = user?.defaultCurrency ?? "USD"
+
   const { data: categories = [], refetch } = useQuery({
     queryKey: ["categories", "detail"],
     queryFn: getCategoriesDetail,
@@ -37,12 +39,12 @@ export const Categories = () => {
         <CardContent className="flex justify-between px-12">
           <div className="flex flex-col gap-3">
             <span className="text-muted-foreground">Total Spent (all wallets)</span>
-            <span className="text-xl font-semibold">{formatMoney(totalSpent, DISPLAY_CURRENCY)}</span>
+            <span className="text-xl font-semibold">{formatMoney(totalSpent, displayCurrency)}</span>
           </div>
           <div className="w-px h-16 bg-border self-center" />
           <div className="flex flex-col gap-3">
             <span className="text-muted-foreground">Total Limit (all wallets)</span>
-            <span className="text-xl font-semibold">{formatMoney(totalLimit, DISPLAY_CURRENCY)}</span>
+            <span className="text-xl font-semibold">{formatMoney(totalLimit, displayCurrency)}</span>
           </div>
         </CardContent>
       </Card>
@@ -67,7 +69,7 @@ export const Categories = () => {
                     category={category.name}
                     total={category.globalLimit}
                     spent={category.globalSpent}
-                    currency={DISPLAY_CURRENCY}
+                    currency={displayCurrency}
                   />
                 ) : (
                   <span className="text-muted-foreground text-sm">No limit set</span>

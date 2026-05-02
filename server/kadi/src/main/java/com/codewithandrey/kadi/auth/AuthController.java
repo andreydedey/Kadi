@@ -3,6 +3,8 @@ package com.codewithandrey.kadi.auth;
 import com.codewithandrey.kadi.auth.dto.AuthResponse;
 import com.codewithandrey.kadi.auth.dto.LoginRequest;
 import com.codewithandrey.kadi.auth.dto.RegisterRequest;
+import com.codewithandrey.kadi.auth.dto.UpdatePasswordRequest;
+import com.codewithandrey.kadi.auth.dto.UpdateProfileRequest;
 import com.codewithandrey.kadi.auth.dto.UserDTO;
 import com.codewithandrey.kadi.auth.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,17 @@ public class AuthController {
     public ResponseEntity<UserDTO> me(Authentication authentication) {
        User user = (User) authentication.getPrincipal();
        return ResponseEntity.ok(userMapper.toDTO(user));
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest) {
+        return ResponseEntity.ok(authService.updateProfile(updateProfileRequest));
+    }
+
+    @PutMapping("/profile/password")
+    public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        authService.updatePassword(updatePasswordRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")

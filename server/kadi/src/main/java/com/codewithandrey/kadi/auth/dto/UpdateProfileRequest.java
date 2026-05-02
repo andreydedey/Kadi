@@ -1,10 +1,6 @@
 package com.codewithandrey.kadi.auth.dto;
 
-import java.util.UUID;
-
-public record UserDTO(
-        UUID id,
+public record UpdateProfileRequest(
         String username,
-        String email,
         String defaultCurrency
 ) {}
