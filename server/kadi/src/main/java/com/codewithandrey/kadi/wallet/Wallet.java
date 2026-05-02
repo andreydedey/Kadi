@@ -23,6 +23,10 @@ public class Wallet {
 
     private Long balance;
 
+    private Integer salaryDay;
+
+    private Long expectedMonthlyIncome;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

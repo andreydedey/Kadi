@@ -41,6 +41,17 @@ export const createWalletCategory = async (
   return data
 }
 
+export interface UpdateWalletRequest {
+  name: string
+  salaryDay?: number
+  expectedMonthlyIncome?: number
+}
+
+export const updateWallet = async (walletId: string, body: UpdateWalletRequest): Promise<Wallet> => {
+  const { data } = await api.put<Wallet>(`/wallet/${walletId}`, body)
+  return data
+}
+
 export const updateWalletCategory = async (
   walletId: string,
   categoryId: number,

@@ -4,6 +4,7 @@ import com.codewithandrey.kadi.category.dto.CreateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.UpdateWalletCategoryRequest;
 import com.codewithandrey.kadi.category.dto.WalletCategoryDTO;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
+import com.codewithandrey.kadi.wallet.dto.UpdateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,14 @@ public class WalletController {
     public ResponseEntity<WalletDTO> createWallet(@RequestBody CreateWalletRequest createWalletRequest) {
         WalletDTO createdWallet = walletService.createWallet(createWalletRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdWallet);
+    }
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity<WalletDTO> updateWallet(
+            @PathVariable UUID uuid,
+            @RequestBody UpdateWalletRequest updateWalletRequest
+    ) {
+        return ResponseEntity.ok(walletService.updateWallet(uuid, updateWalletRequest));
     }
 
     @GetMapping("/{uuid}/categories")

@@ -5,28 +5,22 @@ import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { WalletCard } from "@/components/WalletCard"
 import { RemoveAccountAlertDialog } from "@/components/RemoveAccountAlertDialog"
+import { useQuery } from "@tanstack/react-query"
+import { getWallets } from "@/services/wallet"
 
 export const Settings = () => {
-  const wallets = [
-    { title: "Inter", amount: 2034 },
-    { title: "PicPay", amount: 3528 },
-  ]
+  const { data: walletPage } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: () => getWallets(),
+  })
+
+  const wallets = walletPage?.content ?? []
 
   return (
     <>
       <h1 className="text-xl font-medium mb-6">Settings</h1>
       <div className="flex gap-12">
         <div className="flex flex-col gap-8 grow-6">
-          <div className="space-y-1">
-            <h2 className="text-lg font-medium">Salary Day</h2>
-            <p className="text-md text-muted-foreground">
-              Analytics are calculated for one month, starting from the salary
-              day.
-            </p>
-            <Field>
-              <Input id="salary-day" type="number" className="py-6" />
-            </Field>
-          </div>
           <div className="space-y-1">
             <h2 className="text-lg font-medium">Your Wallets</h2>
             <p className="text-md text-muted-foreground mb-2">
@@ -35,9 +29,10 @@ export const Settings = () => {
             <div className="space-y-4">
               {wallets.map((wallet) => (
                 <WalletCard
-                  key={wallet.title}
-                  title={wallet.title}
-                  amount={wallet.amount}
+                  key={wallet.id}
+                  title={wallet.name}
+                  amount={wallet.balance}
+                  currency={wallet.currency}
                 />
               ))}
             </div>

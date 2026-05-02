@@ -4,7 +4,7 @@ import { Subscriptions } from "@/components/Subscriptions"
 import { CategoryCard } from "@/components/CategoryCard"
 import { CategoryLimitDialog } from "@/components/CategoryLimitDialog"
 import { WalletTabs } from "@/components/WalletTabs/WalletTabs"
-import { formatMoney } from "@/lib/utils"
+import { daysBeforeSalary, formatMoney } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 import { getWallet, getWalletCategories } from "@/services/wallet"
 import { useParams } from "react-router"
@@ -43,7 +43,9 @@ export const WalletPage = () => {
             <CardHeader className="margin">
               <CardTitle className="font-light">Days before salary</CardTitle>
             </CardHeader>
-            <CardContent className="font-medium text-xl">6 days</CardContent>
+            <CardContent className="font-medium text-xl">
+              {wallet.salaryDay != null ? daysBeforeSalary(wallet.salaryDay) : "—"}
+            </CardContent>
           </Card>
         </div>
         <Card>

@@ -1,9 +1,7 @@
 package com.codewithandrey.kadi.wallet.dto;
 
-public record CreateWalletRequest(
+public record UpdateWalletRequest(
         String name,
-        com.codewithandrey.kadi.wallet.Currency currency,
-        Long balance,
         Integer salaryDay,
         Long expectedMonthlyIncome
 ) {

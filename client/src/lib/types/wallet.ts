@@ -3,6 +3,8 @@ export interface Wallet {
   name: string
   balance: number
   currency: NonNullable<Intl.NumberFormatOptions["currency"]>
+  salaryDay: number | null
+  expectedMonthlyIncome: number | null
 }
 
 export interface WalletCategory {

@@ -15,6 +15,7 @@ import com.codewithandrey.kadi.exception.ConflictException;
 import com.codewithandrey.kadi.exception.InsufficientBalanceException;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.wallet.dto.CreateWalletRequest;
+import com.codewithandrey.kadi.wallet.dto.UpdateWalletRequest;
 import com.codewithandrey.kadi.wallet.dto.WalletDTO;
 import com.codewithandrey.kadi.wallet.mapper.WalletMapper;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,19 @@ public class WalletService {
         wallet.setUser(user);
         wallet = walletRepository.save(wallet);
         return walletMapper.toDTO(wallet);
+    }
+
+    @Transactional
+    public WalletDTO updateWallet(UUID id, UpdateWalletRequest updateWalletRequest) {
+        User user = authService.currentUser();
+        Wallet wallet = findOwnedWallet(id);
+        if (walletRepository.existsByNameAndUserAndIdNot(updateWalletRequest.name(), user, id)) {
+            throw new ConflictException("A wallet with this name already exists");
+        }
+        wallet.setName(updateWalletRequest.name());
+        wallet.setSalaryDay(updateWalletRequest.salaryDay());
+        wallet.setExpectedMonthlyIncome(updateWalletRequest.expectedMonthlyIncome());
+        return walletMapper.toDTO(walletRepository.save(wallet));
     }
 
     @Transactional(readOnly = true)
