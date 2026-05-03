@@ -1,5 +1,6 @@
 package com.codewithandrey.kadi.transaction.mapper;
 
+import com.codewithandrey.kadi.subscription.Subscription;
 import com.codewithandrey.kadi.transaction.Transaction;
 import com.codewithandrey.kadi.transaction.dto.TransactionDTO;
 import com.codewithandrey.kadi.transaction.dto.TransactionDetailDTO;
@@ -23,4 +24,12 @@ public interface TransactionMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "destinationWallet", ignore = true)
     Transaction toEntity(TransactionDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "destinationWallet", ignore = true)
+    @Mapping(target = "destinationAmount", ignore = true)
+    @Mapping(target = "type", constant = "EXPENSE")
+    @Mapping(target = "description", source = "name")
+    @Mapping(target = "eventDate", expression = "java(java.time.LocalDate.now())")
+    Transaction toEntity(Subscription subscription);
 }

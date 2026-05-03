@@ -31,4 +31,8 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SubscriptionStatus status = SubscriptionStatus.ACTIVE;
 }

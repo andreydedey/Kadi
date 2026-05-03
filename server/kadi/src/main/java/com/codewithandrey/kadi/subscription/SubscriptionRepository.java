@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface SubscriptionRepository extends JpaRepository<Subscription, UUID> {
 
     List<Subscription> findAllByWallet(Wallet wallet);
+
+    List<Subscription> findAllByStatus(SubscriptionStatus status);
 }

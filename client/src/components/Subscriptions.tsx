@@ -29,12 +29,17 @@ export const Subscriptions = ({ walletId, currency }: SubscriptionsProps) => {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {subscriptions.map((subscription) => (
-            <div key={subscription.id} className="flex items-center justify-between">
+            <div key={subscription.id} className={`flex items-center justify-between ${subscription.status === "INACTIVE" ? "opacity-50" : ""}`}>
               <div className="flex gap-6 items-center">
                 <div className="flex rounded-full h-8 aspect-square items-center justify-center bg-zinc-800">
                   <FontAwesomeIcon icon={faArrowRightArrowLeft} className="text-sm" />
                 </div>
-                <span>{subscription.name}</span>
+                <div className="flex flex-col">
+                  <span>{subscription.name}</span>
+                  {subscription.status === "INACTIVE" && (
+                    <span className="text-xs text-destructive">Insufficient balance</span>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <span>{formatMoney(subscription.amount, currency)}</span>
