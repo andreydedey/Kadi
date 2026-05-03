@@ -143,7 +143,7 @@ public class WalletService {
         walletCategoryRepository.save(walletCategory);
     }
 
-    private Wallet findOwnedWallet(UUID id) {
+    public Wallet findOwnedWallet(UUID id) {
         return walletRepository.findByIdAndUser(id, authService.currentUser())
                 .orElseThrow(() -> new ResourceNotFoundException("wallet not found"));
     }

@@ -69,7 +69,7 @@ export const WalletPage = () => {
             ))}
           </CardContent>
         </Card>
-        <Subscriptions subscriptions={[{ name: "Netflix", amount: 32.12 }]} />
+        <Subscriptions walletId={wallet.id} currency={wallet.currency} />
       </div>
     </div>
     </WalletProvider>
