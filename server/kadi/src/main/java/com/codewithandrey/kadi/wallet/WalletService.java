@@ -40,7 +40,7 @@ public class WalletService {
 
     @Transactional(readOnly = true)
     public Page<WalletDTO> listWallets(Pageable pageable) {
-        return walletRepository.findAllByUser(authService.currentUser(), pageable)
+        return walletRepository.findAllByUserAndArchived(authService.currentUser(), false, pageable)
                 .map(walletMapper::toDTO);
     }
 
@@ -141,6 +141,19 @@ public class WalletService {
     public void changeCategoryLimit(WalletCategory walletCategory, long amount) {
         walletCategory.setSpent(walletCategory.getSpent() + amount);
         walletCategoryRepository.save(walletCategory);
+    }
+
+    @Transactional
+    public void archiveWallet(UUID id) {
+        Wallet wallet = findOwnedWallet(id);
+        wallet.setArchived(true);
+        walletRepository.save(wallet);
+    }
+
+    @Transactional
+    public void deleteWallet(UUID id) {
+        Wallet wallet = findOwnedWallet(id);
+        walletRepository.delete(wallet);
     }
 
     public Wallet findOwnedWallet(UUID id) {

@@ -5,6 +5,7 @@ export interface Wallet {
   currency: NonNullable<Intl.NumberFormatOptions["currency"]>
   salaryDay: number | null
   expectedMonthlyIncome: number | null
+  archived: boolean
 }
 
 export interface WalletCategory {

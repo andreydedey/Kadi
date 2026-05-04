@@ -52,6 +52,18 @@ public class WalletController {
         return ResponseEntity.ok(walletService.updateWallet(uuid, updateWalletRequest));
     }
 
+    @PatchMapping("/{uuid}/archive")
+    public ResponseEntity<Void> archiveWallet(@PathVariable UUID uuid) {
+        walletService.archiveWallet(uuid);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Void> deleteWallet(@PathVariable UUID uuid) {
+        walletService.deleteWallet(uuid);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{uuid}/categories")
     public ResponseEntity<List<WalletCategoryDTO>> listWalletCategories(@PathVariable UUID uuid) {
         return ResponseEntity.ok(walletService.listWalletCategories(uuid));

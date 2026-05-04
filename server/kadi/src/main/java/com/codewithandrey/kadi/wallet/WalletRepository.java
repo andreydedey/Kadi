@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
-    Page<Wallet> findAllByUser(User user, Pageable pageable);
+    Page<Wallet> findAllByUserAndArchived(User user, boolean archived, Pageable pageable);
 
     Optional<Wallet> findByIdAndUser(UUID id, User user);
 

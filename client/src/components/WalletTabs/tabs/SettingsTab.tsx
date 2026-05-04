@@ -1,9 +1,11 @@
 import { EditWalletDialog } from "@/components/EditWalletDialog"
+import { ArchiveWalletDialog } from "@/components/ArchiveWalletDialog"
+import { DeleteWalletDialog } from "@/components/DeleteWalletDialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useWallet } from "@/contexts/WalletContext"
 import { formatMoney } from "@/lib/utils"
-import { faAngleRight, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 
@@ -65,9 +67,7 @@ export const SettingsTab = () => {
               Hide this wallet without deleting data
             </h3>
           </div>
-          <Button variant="ghost" size="icon">
-            <FontAwesomeIcon icon={faAngleRight} />
-          </Button>
+          <ArchiveWalletDialog walletId={wallet.id} walletName={wallet.name} />
         </CardContent>
       </Card>
       <Card className="bg-destructive/20">
@@ -78,9 +78,7 @@ export const SettingsTab = () => {
               Permanently delete this wallet and all of it's data
             </h3>
           </div>
-          <Button variant="ghost" size="icon" className="hover:bg-white/15!">
-            <FontAwesomeIcon icon={faAngleRight} />
-          </Button>
+          <DeleteWalletDialog walletId={wallet.id} walletName={wallet.name} />
         </CardContent>
       </Card>
     </div>

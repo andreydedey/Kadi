@@ -52,6 +52,14 @@ export const updateWallet = async (walletId: string, body: UpdateWalletRequest):
   return data
 }
 
+export const archiveWallet = async (walletId: string): Promise<void> => {
+  await api.patch(`/wallet/${walletId}/archive`)
+}
+
+export const deleteWallet = async (walletId: string): Promise<void> => {
+  await api.delete(`/wallet/${walletId}`)
+}
+
 export const updateWalletCategory = async (
   walletId: string,
   categoryId: number,

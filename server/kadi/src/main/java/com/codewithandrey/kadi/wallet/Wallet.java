@@ -27,6 +27,8 @@ public class Wallet {
 
     private Long expectedMonthlyIncome;
 
+    private boolean archived = false;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

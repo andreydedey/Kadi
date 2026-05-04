@@ -10,6 +10,7 @@ public record WalletDTO(
         Currency currency,
         Long balance,
         Integer salaryDay,
-        Long expectedMonthlyIncome)
+        Long expectedMonthlyIncome,
+        boolean archived)
 {
 }
