@@ -1,6 +1,7 @@
 package com.codewithandrey.kadi.transaction;
 
 import com.codewithandrey.kadi.category.Category;
+import com.codewithandrey.kadi.auth.AuthService;
 import com.codewithandrey.kadi.category.CategoryRepository;
 import com.codewithandrey.kadi.category.WalletCategoryRepository;
 import com.codewithandrey.kadi.exception.ResourceNotFoundException;
@@ -34,6 +35,7 @@ public class TransactionService {
     private final CategoryRepository categoryRepository;
     private final TransactionMapper transactionMapper;
     private final WalletService walletService;
+    private final AuthService authService;
     private final WalletCategoryRepository walletCategoryRepository;
 
     @Transactional(readOnly = true)
@@ -41,6 +43,21 @@ public class TransactionService {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new ResourceNotFoundException("Wallet not found"));
         return transactionRepository.findByWalletOrderByEventDateDesc(wallet)
+                .stream()
+                .map(transactionMapper::toDetailDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TransactionDetailDTO> listRecent(UUID walletId) {
+        if (walletId != null) {
+            Wallet wallet = walletService.findOwnedWallet(walletId);
+            return transactionRepository.findByWalletOrderByEventDateDesc(wallet)
+                    .stream()
+                    .map(transactionMapper::toDetailDTO)
+                    .toList();
+        }
+        return transactionRepository.findByWallet_UserOrderByEventDateDesc(authService.currentUser())
                 .stream()
                 .map(transactionMapper::toDetailDTO)
                 .toList();

@@ -14,7 +14,7 @@ interface SubscriptionsProps {
 
 export const Subscriptions = ({ walletId, currency }: SubscriptionsProps) => {
   const { data: subscriptions = [], refetch } = useQuery({
-    queryKey: ["subscriptions", walletId],
+    queryKey: ["subscriptions", walletId ?? "all"],
     queryFn: () => getSubscriptions(walletId),
   })
 

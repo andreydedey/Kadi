@@ -17,8 +17,10 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @GetMapping("/wallet/{walletId}")
-    public ResponseEntity<List<SubscriptionDTO>> listSubscriptions(@PathVariable UUID walletId) {
+    @GetMapping
+    public ResponseEntity<List<SubscriptionDTO>> listSubscriptions(
+            @RequestParam(required = false) UUID walletId
+    ) {
         return ResponseEntity.ok(subscriptionService.listSubscriptions(walletId));
     }
 

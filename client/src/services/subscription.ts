@@ -1,8 +1,10 @@
 import type { Subscription } from "@/lib/types/subscription"
 import { api } from "./api"
 
-export const getSubscriptions = async (walletId: string): Promise<Subscription[]> => {
-  const { data } = await api.get<Subscription[]>(`/subscription/wallet/${walletId}`)
+export const getSubscriptions = async (walletId?: string): Promise<Subscription[]> => {
+  const { data } = await api.get<Subscription[]>("/subscription", {
+    params: walletId ? { walletId } : undefined,
+  })
   return data
 }
 

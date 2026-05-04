@@ -28,8 +28,14 @@ public class SubscriptionService {
 
     @Transactional(readOnly = true)
     public List<SubscriptionDTO> listSubscriptions(UUID walletId) {
-        Wallet wallet = walletService.findOwnedWallet(walletId);
-        return subscriptionRepository.findAllByWallet(wallet)
+        if (walletId != null) {
+            Wallet wallet = walletService.findOwnedWallet(walletId);
+            return subscriptionRepository.findAllByWallet(wallet)
+                    .stream()
+                    .map(subscriptionMapper::toDTO)
+                    .toList();
+        }
+        return subscriptionRepository.findAllByWallet_User(authService.currentUser())
                 .stream()
                 .map(subscriptionMapper::toDTO)
                 .toList();

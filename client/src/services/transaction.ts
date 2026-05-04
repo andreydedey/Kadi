@@ -16,6 +16,13 @@ export const getTransactions = async (walletId: string): Promise<TransactionDeta
   return data
 }
 
+export const getRecentTransactions = async (walletId?: string): Promise<TransactionDetail[]> => {
+  const { data } = await api.get<TransactionDetail[]>("/transaction", {
+    params: walletId ? { walletId } : undefined,
+  })
+  return data
+}
+
 export const createTransaction = async (
   walletId: string,
   body: CreateTransactionRequest,

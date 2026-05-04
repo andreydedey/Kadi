@@ -13,6 +13,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     List<Transaction> findByWalletOrderByEventDateDesc(Wallet wallet);
 
+    List<Transaction> findByWallet_UserOrderByEventDateDesc(User user);
+
     interface CategorySpent {
         Long getCategoryId();
         Long getTotalSpent();

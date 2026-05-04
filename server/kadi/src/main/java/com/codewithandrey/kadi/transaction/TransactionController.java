@@ -12,23 +12,29 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("wallet/{walletId}/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping
+    @GetMapping("transaction")
+    public ResponseEntity<List<TransactionDetailDTO>> listRecent(
+            @RequestParam(required = false) UUID walletId
+    ) {
+        return ResponseEntity.ok(transactionService.listRecent(walletId));
+    }
+
+    @GetMapping("wallet/{walletId}/transactions")
     public ResponseEntity<List<TransactionDetailDTO>> listTransactions(@PathVariable UUID walletId) {
         return ResponseEntity.ok(transactionService.listByWallet(walletId));
     }
 
-    @GetMapping("/summary")
+    @GetMapping("wallet/{walletId}/transactions/summary")
     public ResponseEntity<List<WeeklyTransactionSummaryDTO>> listWeeklySummary(@PathVariable UUID walletId) {
         return ResponseEntity.ok(transactionService.listWeeklySummary(walletId));
     }
 
-    @PostMapping
+    @PostMapping("wallet/{walletId}/transactions")
     public ResponseEntity<TransactionDTO> createTransaction(
             @PathVariable UUID walletId,
             @RequestBody TransactionDTO request
@@ -36,7 +42,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.create(walletId, request));
     }
 
-    @PutMapping("/{transactionId}")
+    @PutMapping("wallet/{walletId}/transactions/{transactionId}")
     public ResponseEntity<TransactionDTO> updateTransaction(
             @PathVariable UUID walletId,
             @PathVariable UUID transactionId,
@@ -45,7 +51,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.update(walletId, transactionId, request));
     }
 
-    @DeleteMapping("/{transactionId}")
+    @DeleteMapping("wallet/{walletId}/transactions/{transactionId}")
     public ResponseEntity<Void> deleteTransaction(
             @PathVariable UUID walletId,
             @PathVariable UUID transactionId
