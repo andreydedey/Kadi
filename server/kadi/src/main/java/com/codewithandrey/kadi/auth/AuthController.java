@@ -44,6 +44,12 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteAccount() {
+        authService.deleteAccount();
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(

@@ -15,7 +15,7 @@ export const Dashboard = () => {
   const { user } = useAuth()
   const displayCurrency = user?.defaultCurrency ?? "USD"
 
-  const { data: walletPage } = useQuery({
+  const { data: walletPage, refetch: refetchWallets } = useQuery({
     queryKey: ["wallets"],
     queryFn: getWallets,
   })
@@ -37,11 +37,11 @@ export const Dashboard = () => {
     <>
       <div className="flex justify-between mb-6">
         <h1 className="text-xl font-medium">Dashboard</h1>
-        <AddWalletDialog />
+        <AddWalletDialog onWalletCreated={refetchWallets} />
       </div>
       <div className="flex space-x-5 mb-6">
         {wallets.map((wallet) => (
-          <Link key={wallet.id} to={`/wallet/${wallet.id}`}>
+          <Link key={wallet.id} to={`/wallets/${wallet.id}`}>
             <WalletCard
               title={wallet.name}
               amount={wallet.balance}

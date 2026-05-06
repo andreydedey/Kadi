@@ -7,8 +7,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Spinner } from "@/components/ui/spinner"
 import { Link, useNavigate } from "react-router"
-import { register as registerUser } from "@/services/auth"
+import { register as registerUser, me } from "@/services/auth"
 import { useMutation } from "@tanstack/react-query"
 import {
   createUserSchema,
@@ -17,25 +18,34 @@ import {
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/contexts/AuthContext"
+import type { AxiosError } from "axios"
 
 export const Signup = () => {
   const navigate = useNavigate()
-  const { setAuthenticated } = useAuth()
+  const { setAuthenticated, setUser } = useAuth()
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserSchema),
   })
 
-  const { mutate: createUser } = useMutation({
-    mutationFn: ({ name, email, password }: CreateUserSchema) =>
-      registerUser({ username: name, email, password }),
-    onSuccess: () => {
+  const { mutate: createUser, isPending } = useMutation({
+    mutationFn: async ({ name, email, password }: CreateUserSchema) => {
+      await registerUser({ username: name, email, password })
+      return me()
+    },
+    onSuccess: (user) => {
+      setUser(user)
       setAuthenticated(true)
       navigate("/home")
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      const message = error.response?.data?.message ?? "Registration failed"
+      setError("root", { message })
     },
   })
 
@@ -87,9 +97,12 @@ export const Signup = () => {
                 <FieldError>{errors.confirmPassword?.message}</FieldError>
               </Field>
             </FieldGroup>
+            {errors.root && (
+              <p className="text-sm text-red-500 mt-2">{errors.root.message}</p>
+            )}
             <div className="flex flex-col gap-3 items-center mt-6">
-              <Button className="w-full" type={"submit"}>
-                Sign up
+              <Button className="w-full" type="submit" disabled={isPending}>
+                {isPending ? <Spinner className="size-4" /> : "Sign up"}
               </Button>
               <span className="text-muted-foreground text-sm">
                 Already have an account?{" "}

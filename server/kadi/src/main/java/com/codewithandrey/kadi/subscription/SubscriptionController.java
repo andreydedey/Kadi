@@ -1,5 +1,6 @@
 package com.codewithandrey.kadi.subscription;
 
+import com.codewithandrey.kadi.subscription.dto.CompleteSubscriptionRequest;
 import com.codewithandrey.kadi.subscription.dto.CreateSubscriptionRequest;
 import com.codewithandrey.kadi.subscription.dto.SubscriptionDTO;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,15 @@ public class SubscriptionController {
             @RequestBody CreateSubscriptionRequest createSubscriptionRequest
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.createSubscription(walletId, createSubscriptionRequest));
+    }
+
+    @PostMapping("/{subscriptionId}/complete")
+    public ResponseEntity<Void> completeSubscription(
+            @PathVariable UUID subscriptionId,
+            @RequestBody CompleteSubscriptionRequest request
+    ) {
+        subscriptionService.completeSubscription(subscriptionId, request.eventDate());
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{subscriptionId}")

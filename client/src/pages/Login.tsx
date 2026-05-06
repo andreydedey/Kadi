@@ -14,11 +14,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, type LoginSchema } from "@/lib/schemas/loginSchema"
 import { useMutation } from "@tanstack/react-query"
-import { login } from "@/services/auth"
+import { login, me } from "@/services/auth"
 import type { AxiosError } from "axios"
 
 export const Login = () => {
-  const { setAuthenticated } = useAuth()
+  const { setAuthenticated, setUser } = useAuth()
   const navigate = useNavigate()
 
   const {
@@ -31,8 +31,12 @@ export const Login = () => {
   })
 
   const { mutate: loginUser, isPending } = useMutation({
-    mutationFn: (data: LoginSchema) => login(data),
-    onSuccess: () => {
+    mutationFn: async (data: LoginSchema) => {
+      await login(data)
+      return me()
+    },
+    onSuccess: (user) => {
+      setUser(user)
       setAuthenticated(true)
       navigate("/home")
     },

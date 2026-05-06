@@ -41,6 +41,10 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    public void deleteAccount() {
+        userRepository.delete(currentUser());
+    }
+
     public AuthResponse register(RegisterRequest registerRequest) {
         User user = userMapper.toEntity(registerRequest);
         user.setPassword(passwordEncoder.encode(registerRequest.password()));

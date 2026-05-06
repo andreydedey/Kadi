@@ -10,8 +10,18 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog"
 import { Button } from "./ui/button"
+import { useMutation } from "@tanstack/react-query"
+import { deleteAccount } from "@/services/auth"
+import { useAuth } from "@/contexts/AuthContext"
 
 export const RemoveAccountAlertDialog = () => {
+  const { logout } = useAuth()
+
+  const { mutate: removeAccount } = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => logout(),
+  })
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -29,7 +39,9 @@ export const RemoveAccountAlertDialog = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => removeAccount()}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

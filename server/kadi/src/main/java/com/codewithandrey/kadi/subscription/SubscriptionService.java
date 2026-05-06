@@ -7,12 +7,16 @@ import com.codewithandrey.kadi.exception.ResourceNotFoundException;
 import com.codewithandrey.kadi.subscription.dto.CreateSubscriptionRequest;
 import com.codewithandrey.kadi.subscription.dto.SubscriptionDTO;
 import com.codewithandrey.kadi.subscription.mapper.SubscriptionMapper;
+import com.codewithandrey.kadi.transaction.Transaction;
+import com.codewithandrey.kadi.transaction.TransactionRepository;
+import com.codewithandrey.kadi.transaction.mapper.TransactionMapper;
 import com.codewithandrey.kadi.wallet.Wallet;
 import com.codewithandrey.kadi.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +29,8 @@ public class SubscriptionService {
     private final CategoryRepository categoryRepository;
     private final WalletService walletService;
     private final AuthService authService;
+    private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
 
     @Transactional(readOnly = true)
     public List<SubscriptionDTO> listSubscriptions(UUID walletId) {
@@ -57,6 +63,21 @@ public class SubscriptionService {
         }
 
         return subscriptionMapper.toDTO(subscriptionRepository.save(subscription));
+    }
+
+    @Transactional
+    public void completeSubscription(UUID subscriptionId, LocalDate eventDate) {
+        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription not found"));
+        if (!subscription.getWallet().getUser().getId().equals(authService.currentUser().getId())) {
+            throw new ResourceNotFoundException("Subscription not found");
+        }
+
+        Transaction transaction = transactionMapper.toEntity(subscription);
+        transaction.setEventDate(eventDate);
+        transactionRepository.save(transaction);
+
+        walletService.changeBalance(subscription.getWallet(), -subscription.getAmount());
     }
 
     @Transactional

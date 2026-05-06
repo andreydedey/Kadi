@@ -55,3 +55,7 @@ export async function updateProfile(body: UpdateProfileRequest): Promise<User> {
 export async function updatePassword(body: UpdatePasswordRequest): Promise<void> {
   await api.put("/auth/profile/password", body)
 }
+
+export async function deleteAccount(): Promise<void> {
+  await api.delete("/auth/me")
+}

@@ -6,8 +6,10 @@ import { HistoryTab } from "./tabs/HistoryTab"
 import { ReportTab } from "./tabs/ReportTab"
 import { faChartColumn } from "@fortawesome/free-solid-svg-icons"
 import { SettingsTab } from "./tabs/SettingsTab"
+import { useWallet } from "@/contexts/WalletContext"
 
 export const WalletTabs = () => {
+  const wallet = useWallet()
   const tabs = [
     { title: "history", icon: faClockRotateLeft },
     { title: "report", icon: faChartColumn },
@@ -17,7 +19,7 @@ export const WalletTabs = () => {
   return (
     <Tabs className="flex flex-3 flex-col gap-6" defaultValue="history">
       <div className="flex justify-between">
-        <h1 className="text-xl font-medium">Inter (USD)</h1>
+        <h1 className="text-xl font-medium">{wallet.name} ({wallet.currency})</h1>
         <TabsList className="bg-transparent space-x-1">
           {tabs.map((tab) => (
             <TabsTrigger

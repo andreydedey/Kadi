@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader } from "./ui/card"
 import { AddSubscriptionDialog } from "./AddSubscriptionDialog"
 import { CancelSubscriptionDialog } from "./CancelSubscriptionDialog"
+import { MarkSubscriptionAsCompletedDialog } from "./MarkSubscriptionAsCompletedDialog"
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
@@ -43,6 +44,12 @@ export const Subscriptions = ({ walletId, currency }: SubscriptionsProps) => {
               </div>
               <div className="flex items-center gap-3">
                 <span>{formatMoney(subscription.amount, currency)}</span>
+                <MarkSubscriptionAsCompletedDialog
+                  subscriptionId={subscription.id}
+                  subscriptionName={subscription.name}
+                  icon={faArrowRightArrowLeft}
+                  onSuccess={refetch}
+                />
                 <CancelSubscriptionDialog
                   subscriptionId={subscription.id}
                   name={subscription.name}

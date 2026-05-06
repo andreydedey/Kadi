@@ -25,3 +25,7 @@ export const createSubscription = async (
 export const deleteSubscription = async (subscriptionId: string): Promise<void> => {
   await api.delete(`/subscription/${subscriptionId}`)
 }
+
+export const completeSubscription = async (subscriptionId: string, eventDate: string): Promise<void> => {
+  await api.post(`/subscription/${subscriptionId}/complete`, { eventDate })
+}
