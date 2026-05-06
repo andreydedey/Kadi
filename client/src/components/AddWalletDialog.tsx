@@ -31,9 +31,10 @@ import axios from "axios"
 
 interface AddWalletContentProps {
   onClose: () => void
+  onWalletCreated: () => void
 }
 
-const AddWalletContent = ({ onClose }: AddWalletContentProps) => {
+const AddWalletContent = ({ onClose, onWalletCreated }: AddWalletContentProps) => {
   const { data: currencies = [] } = useQuery<string[]>({
     queryKey: ["currencies"],
     queryFn: async () => {
@@ -59,6 +60,7 @@ const AddWalletContent = ({ onClose }: AddWalletContentProps) => {
   const { mutate: createWallet, isPending } = useMutation({
     mutationFn: createWalletRequest,
     onSuccess: (wallet) => {
+      onWalletCreated()
       toast.success(`Wallet ${wallet.name} has been created`)
       onClose()
     },
@@ -126,7 +128,11 @@ const AddWalletContent = ({ onClose }: AddWalletContentProps) => {
   )
 }
 
-export const AddWalletDialog = () => {
+interface AddWalletDialogProps {
+  onWalletCreated: () => void
+}
+
+export const AddWalletDialog = ({ onWalletCreated }: AddWalletDialogProps) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -139,7 +145,7 @@ export const AddWalletDialog = () => {
           <DialogHeader>
             <DialogTitle className="mb-6">Add Wallet</DialogTitle>
           </DialogHeader>
-          <AddWalletContent onClose={() => setOpen(false)} />
+          <AddWalletContent onClose={() => setOpen(false)} onWalletCreated={onWalletCreated} />
         </DialogContent>
       )}
     </Dialog>
