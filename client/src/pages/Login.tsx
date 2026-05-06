@@ -7,6 +7,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Spinner } from "@/components/ui/spinner"
 import { useAuth } from "@/contexts/AuthContext"
 import { Link, useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
@@ -29,7 +30,7 @@ export const Login = () => {
     resolver: zodResolver(loginSchema),
   })
 
-  const { mutate: loginUser } = useMutation({
+  const { mutate: loginUser, isPending } = useMutation({
     mutationFn: (data: LoginSchema) => login(data),
     onSuccess: () => {
       setAuthenticated(true)
@@ -76,8 +77,8 @@ export const Login = () => {
               <p className="text-sm text-red-500 mt-2">{errors.root.message}</p>
             )}
             <div className="flex flex-col gap-3 items-center mt-6">
-              <Button className="w-full" type="submit">
-                Sign in
+              <Button className="w-full" type="submit" disabled={isPending}>
+                {isPending ? <Spinner className="size-4" /> : "Sign in"}
               </Button>
               <span className="text-muted-foreground text-sm">
                 Don't have an account?{" "}

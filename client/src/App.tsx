@@ -8,22 +8,31 @@ import { Categories } from "./pages/Categories"
 import { Login } from "./pages/Login"
 import { Signup } from "./pages/Signup"
 import { useAuth } from "./contexts/AuthContext"
+import { Spinner } from "./components/ui/spinner"
+
+function LoadingScreen() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <Spinner className="size-8" />
+    </div>
+  )
+}
 
 function ProtectedRoute() {
   const { authenticated, loading } = useAuth()
-  if (loading) return null
+  if (loading) return <LoadingScreen />
   return authenticated ? <Outlet /> : <Navigate to="/login" replace />
 }
 
 function PublicRoute() {
   const { authenticated, loading } = useAuth()
-  if (loading) return null
+  if (loading) return <LoadingScreen />
   return authenticated ? <Navigate to="/home" replace /> : <Outlet />
 }
 
 function RootRedirect() {
   const { authenticated, loading } = useAuth()
-  if (loading) return null
+  if (loading) return <LoadingScreen />
   return <Navigate to={authenticated ? "/home" : "/login"} replace />
 }
 
