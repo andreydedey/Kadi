@@ -23,6 +23,24 @@ All data is persisted in a ``PostgreSQL`` database using ``Spring Data JPA``.
 - **Tailwind CSS** – Styling
 - **Axios** – HTTP client
 
+### Interface
+- Dashboard page
+<img width="1469" height="943" alt="Screenshot 2026-05-09 at 18 35 35" src="https://github.com/user-attachments/assets/75af2d0a-ffdb-4fb7-a6d9-9f86363adf95" />
+
+
+- Wallet page
+<img width="2938" height="1886" alt="image" src="https://github.com/user-attachments/assets/54e5eb92-f4fa-4248-9743-607ab3df76f3" />
+<img width="2938" height="1886" alt="image" src="https://github.com/user-attachments/assets/15b41d85-1aa0-49dd-8437-2d6dd90b8a5c" />
+
+
+
+- Categories page
+<img width="2938" height="1886" alt="image" src="https://github.com/user-attachments/assets/7808d25f-61c5-432d-af86-29be97275196" />
+
+- Settings page
+<img width="2938" height="1886" alt="image" src="https://github.com/user-attachments/assets/8f75b44a-9488-494b-85c3-0f1ceb54d9dd" />
+
+
 ## ▶️ Running the project
 
 **Prerequisites:** Java 21, Node.js, Bun and Docker
@@ -47,4 +65,3 @@ bun dev
 ```
 The application will be available at ``http://localhost:5173``
 
-### Interface
